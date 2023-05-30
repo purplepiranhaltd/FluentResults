@@ -45,6 +45,18 @@ public class ResultsTUnitTests
     }
 
     [Test]
+    public void Test_SuccessResultWithObject_DoesHaveCorrectResultAccessibleViaOnSuccess()
+    {
+        var result = Result.SuccessResult(5);
+        result.OnSuccess(r =>
+        {
+            Assert.That(r, Is.EqualTo(5));
+            Assert.Pass();
+        });
+        Assert.Fail();
+    }
+
+    [Test]
     public void Test_SuccessResultWithObject_DoesNotReturnError()
     {
         var result = Result.SuccessResult(5);
