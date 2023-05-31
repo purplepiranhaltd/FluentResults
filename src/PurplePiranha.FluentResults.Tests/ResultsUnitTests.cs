@@ -181,4 +181,76 @@ public class ResultsUnitTests
         });
         Assert.Pass();
     }
+
+    [Test]
+    public void Test_SuccessResultToTypedResult_ReturnsCorrectTypedResult()
+    {
+        var result = Result.SuccessResult();
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult, Is.TypeOf<Result<int>>());
+    }
+
+    [Test]
+    public void Test_SuccessResultToTypedResult_ReturnsDefaultValue()
+    {
+        var result = Result.SuccessResult();
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult.Value, Is.EqualTo(default(int)));
+    }
+
+    [Test]
+    public void Test_SuccessResultToTypedResult_IsSuccess()
+    {
+        var result = Result.SuccessResult();
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult.IsSuccess, Is.EqualTo(true));
+    }
+
+    [Test]
+    public void Test_ErrorResultToTypedResult_ReturnsCorrectTypedResult()
+    {
+        var result = Result.ErrorResult(Error.NullValue);
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult, Is.TypeOf<Result<int>>());
+    }
+
+    [Test]
+    public void Test_SuccessResultToTypedResult_IsError()
+    {
+        var result = Result.ErrorResult(Error.NullValue);
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult.IsError, Is.EqualTo(true));
+    }
+
+    [Test]
+    public void Test_ErrorResultToTypedResult_ReturnsCorrectError()
+    {
+        var result = Result.ErrorResult(Error.NullValue);
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult.Error, Is.EqualTo(Error.NullValue));
+    }
+
+    [Test]
+    public void Test_ValidationFailureResultToTypedResult_ReturnsCorrectTypedResult()
+    {
+        var result = Result.ValidationFailureResult(new string[] { "Test" }.ToList());
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult, Is.TypeOf<Result<int>>());
+    }
+
+    [Test]
+    public void Test_ValidationFailureResultToTypedResult_IsValidationFailure()
+    {
+        var result = Result.ValidationFailureResult(new string[] { "Test" }.ToList());
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult.IsValidationFailure, Is.EqualTo(true));
+    }
+
+    [Test]
+    public void Test_ValidationFailureResultToTypedResult_ReturnsValidationFailures()
+    {
+        var result = Result.ValidationFailureResult(new string[] { "Test1", "Test2", "Test3" }.ToList());
+        var typedResult = result.ToTypedResult<int>();
+        Assert.That(typedResult.ValidationErrors.Count, Is.EqualTo(3));
+    }
 }

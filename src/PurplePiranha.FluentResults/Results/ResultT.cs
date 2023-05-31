@@ -20,6 +20,8 @@ public class Result<TValue> : Result
         : throw new InvalidOperationException("The value of a failure result can not be accessed.");
     #endregion
 
+    
+
     #region Operators
     public static implicit operator Result<TValue>(TValue? value) => Create(value);
     #endregion

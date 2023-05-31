@@ -52,4 +52,19 @@ public class Result
     public bool IsValidationFailure => ResultType == ResultType.ValidationFailure;
     public bool IsError => ResultType == ResultType.Error;
     #endregion
+
+    #region Methods
+    public Result<T> ToTypedResult<T>()
+    {
+        switch (ResultType)
+        {
+            case ResultType.Success: return new Result<T>(default);
+            case ResultType.ValidationFailure: return new Result<T>(default, ValidationErrors);
+            case ResultType.Error: return new Result<T>(default, Error);
+            default: throw new InvalidOperationException();
+        }
+    }
+    #endregion
 }
+
+
