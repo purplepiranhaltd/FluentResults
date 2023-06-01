@@ -28,14 +28,8 @@ namespace PurplePiranha.FluentResults.Validation.Results
         #region Ctr
         protected internal ResultWithValidation(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) => _value = value;
 
-        public ResultWithValidation(Result<TValue> result) : base(result)
-        {
-            _error = result.Error;
-            _customProperties = result.CustomProperties;
-
-            if (result.Error == Error.None)
-                _value = result.Value;
-        }
+        public ResultWithValidation(Result<TValue> result) : base(result) => _value = result.Value;
+        public ResultWithValidation(ResultWithValidation<TValue> result) : base(result) => _value = result._value;
         #endregion
 
         #region Public properties
