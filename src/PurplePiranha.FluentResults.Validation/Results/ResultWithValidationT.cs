@@ -33,7 +33,7 @@ namespace PurplePiranha.FluentResults.Validation.Results
             _error = result.Error;
             _customProperties = result.CustomProperties;
 
-            if (result.Error != Error.None && result.Error != ValidationErrors.ValidationFailure)
+            if (result.Error == Error.None)
                 _value = result.Value;
         }
         #endregion

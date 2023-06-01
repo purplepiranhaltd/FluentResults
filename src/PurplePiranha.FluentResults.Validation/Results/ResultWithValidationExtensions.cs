@@ -17,6 +17,14 @@ namespace PurplePiranha.FluentResults.Validation.Results
             return result;
         }
 
+        public static ResultWithValidation<T> OnSuccess<T>(this ResultWithValidation<T> result, Action<T?> action)
+        {
+            if (result.IsSuccess)
+                action(result.Value);
+
+            return result;
+        }
+
 
     }
 }
