@@ -4,7 +4,22 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <Authors>Paul @ Purple Piranha</Authors>
+	  <Company>Purple Piranha Limited</Company>
+	  <Description>
+		  FluentResults allows results to be accessed in a fluent manner to determine their success or failure.
+	  </Description>
+	  <RepositoryUrl>https://github.com/purplepiranhaltd/FluentResults</RepositoryUrl>
+	  <RepositoryType>Git</RepositoryType>
+	  <IncludeSymbols>true</IncludeSymbols>
+	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
+	  <EmbedUntrackedSources>true</EmbedUntrackedSources>
+	  <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PurplePiranha.FluentResults\PurplePiranha.FluentResults.csproj" />
