@@ -28,7 +28,7 @@ namespace PurplePiranha.FluentResults.Validation.Results
         #region Ctr
         protected internal ResultWithValidation(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) => _value = value;
 
-        protected internal ResultWithValidation(Result<TValue> result) : base(result)
+        public ResultWithValidation(Result<TValue> result) : base(result)
         {
             _error = result.Error;
             _customProperties = result.CustomProperties;

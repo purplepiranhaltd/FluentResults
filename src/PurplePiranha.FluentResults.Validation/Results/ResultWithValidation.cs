@@ -14,7 +14,7 @@ namespace PurplePiranha.FluentResults.Validation.Results
         protected internal const string VALIDATION_FAILURE_KEY = "ValidationFailure";
         protected internal ResultWithValidation(Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) { }
 
-        protected internal ResultWithValidation(Result result) : base(result) { }
+        public ResultWithValidation(Result result) : base(result) { }
 
         public new static ResultWithValidation SuccessResult() => new ResultWithValidation(Result.SuccessResult());
         public new static ResultWithValidation ErrorResult(Error error) => new ResultWithValidation(Result.ErrorResult(error));

@@ -11,7 +11,7 @@ public class Result<TValue> : Result
     #region Ctr
     protected internal Result(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) => _value = value;
 
-    protected internal Result(Result<TValue> result) : base(result) => _value = result._value;
+    public Result(Result<TValue> result) : base(result) => _value = result._value;
     #endregion
 
     #region Public properties

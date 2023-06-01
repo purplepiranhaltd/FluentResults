@@ -16,7 +16,7 @@ public class Result
         _customProperties = customProperties ?? new Dictionary<string, object>();
     }
 
-    protected internal Result(Result result) : this(result._error, result._customProperties)
+    public Result(Result result) : this(result._error, result._customProperties)
     {
 
     }
