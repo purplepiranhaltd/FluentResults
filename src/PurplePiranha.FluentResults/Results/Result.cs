@@ -4,66 +4,40 @@ namespace PurplePiranha.FluentResults.Results;
 
 public class Result
 {
+    #region Fields
+    protected internal Error _error;
+    protected internal Dictionary<string, object> _customProperties; // allows the use of custom properties in derived classes
+    #endregion
+
     #region Ctr
-    protected internal Result()
+    protected internal Result(Error error, Dictionary<string, object>? customProperties = null)
     {
-        // success
-        ResultType = ResultType.Success;
-        Error = Error.None;
-        ValidationErrors = new List<string>();
-
+        _error = error;
+        _customProperties = customProperties ?? new Dictionary<string, object>();
     }
 
-    protected internal Result(Error error)
+    protected internal Result(Result result) : this(result._error, result._customProperties)
     {
-        // error
-        ResultType = ResultType.Error;
-        Error = error;
-        ValidationErrors = new List<string>();
-    }
 
-    protected internal Result(IEnumerable<string> validationErrors)
-    {
-        // validation error(s)
-        ResultType = ResultType.ValidationFailure;
-        Error = Error.None;
-        ValidationErrors = validationErrors;
     }
     #endregion
 
     #region Static create methods
-    public static Result SuccessResult() => new();
+    public static Result SuccessResult() => new(Error.None);
     public static Result ErrorResult(Error error) => new(error);
-    public static Result ValidationFailureResult(IEnumerable<string> validationErrors) => new(validationErrors);
-
-    public static Result<TValue> SuccessResult<TValue>(TValue value) => new Result<TValue>(value);
+    public static Result<TValue> SuccessResult<TValue>(TValue value) => new Result<TValue>(value, Error.None);
     public static Result<TValue> ErrorResult<TValue>(Error error) => new(default, error);
-    public static Result<TValue> ValidationFailureResult<TValue>(IEnumerable<string> validationErrors) => new(default, validationErrors);
-
     public static Result<TValue> Create<TValue>(TValue? value) => value is not null ? SuccessResult(value) : ErrorResult<TValue>(Error.NullValue);
     #endregion
 
     #region Public properties
-    public ResultType ResultType { get; }
-    public Error Error { get; }
-    public IEnumerable<string> ValidationErrors { get; }
+    public virtual Error Error => _error;
 
-    public bool IsSuccess => ResultType == ResultType.Success;
-    public bool IsValidationFailure => ResultType == ResultType.ValidationFailure;
-    public bool IsError => ResultType == ResultType.Error;
-    #endregion
+    public Dictionary<string, object> CustomProperties => _customProperties;
 
-    #region Methods
-    public Result<T> ToTypedResult<T>()
-    {
-        switch (ResultType)
-        {
-            case ResultType.Success: return new Result<T>(default);
-            case ResultType.ValidationFailure: return new Result<T>(default, ValidationErrors);
-            case ResultType.Error: return new Result<T>(default, Error);
-            default: throw new InvalidOperationException();
-        }
-    }
+    public virtual bool IsSuccess => _error == Error.None;
+    
+    public virtual bool IsError => _error != Error.None;
     #endregion
 }
 

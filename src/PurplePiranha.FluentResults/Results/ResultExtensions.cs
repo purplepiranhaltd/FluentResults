@@ -11,17 +11,10 @@ public static class ResultExtensions
 
         return result;
     }
-    public static Result OnSuccess<T>(this Result<T> result, Action<T> action)
+    public static Result OnSuccess<T>(this Result<T> result, Action<T?> action)
     {
         if (result.IsSuccess)
             action(result.Value);
-
-        return result;
-    }
-    public static Result OnValidationFailure(this Result result, Action<IEnumerable<string>> action)
-    {
-        if (result.IsValidationFailure)
-            action(result.ValidationErrors);
 
         return result;
     }

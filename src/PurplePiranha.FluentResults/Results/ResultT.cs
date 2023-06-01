@@ -9,18 +9,14 @@ public class Result<TValue> : Result
     #endregion
 
     #region Ctr
-    protected internal Result(TValue? value) : base() => _value = value;
-    protected internal Result(TValue? value, Error error) : base(error) => _value = value;
-    protected internal Result(TValue? value, IEnumerable<string> validationErrors) : base(validationErrors) => _value = value;
+    protected internal Result(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) => _value = value;
+
+    protected internal Result(Result<TValue> result) : base(result) => _value = result._value;
     #endregion
 
     #region Public properties
-    public TValue Value => IsSuccess
-        ? _value!
-        : throw new InvalidOperationException("The value of a failure result can not be accessed.");
+    public virtual TValue? Value => _value;
     #endregion
-
-    
 
     #region Operators
     public static implicit operator Result<TValue>(TValue? value) => Create(value);

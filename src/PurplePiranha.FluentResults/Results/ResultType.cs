@@ -1,8 +1,8 @@
-﻿namespace PurplePiranha.FluentResults.Results;
+﻿//namespace PurplePiranha.FluentResults.Results;
 
-public enum ResultType
-{
-    Success,
-    ValidationFailure,
-    Error
-}
+//public enum ResultType
+//{
+//    Success,
+//    ValidationFailure,
+//    Error
+//}
