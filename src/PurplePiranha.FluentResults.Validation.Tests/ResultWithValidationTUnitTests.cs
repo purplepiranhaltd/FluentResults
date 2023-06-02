@@ -238,5 +238,21 @@ namespace PurplePiranha.FluentResults.Validation.Tests
             Assert.That(result.IsError, Is.EqualTo(true));
             Assert.That(result.Error, Is.EqualTo(ValidationErrors.ValidationFailure));
         }
+
+        [Test]
+        public void ResultT_Success_CastToResultWithValidationT()
+        {
+            ResultWithValidation<int> result = Result.SuccessResult(1);
+            Assert.That(result.IsSuccess, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void ResultT_Error_CastToResultWithValidationT()
+        {
+            var testError = new Error("Test", "Testing");
+            ResultWithValidation<int> result = Result.ErrorResult<int>(testError);
+            Assert.That(result.IsError, Is.EqualTo(true));
+            Assert.That(result.Error, Is.EqualTo(testError));
+        }
     }
 }

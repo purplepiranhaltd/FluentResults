@@ -26,6 +26,7 @@ namespace PurplePiranha.FluentResults.Validation.Results
         public static implicit operator ResultWithValidation<TValue>(ResultWithValidation result) => new(default, result.Error, null, result.CustomProperties);
         public static implicit operator ResultWithValidation(ResultWithValidation<TValue> result) => new(result.Error, null, result.CustomProperties);
         public static implicit operator ResultWithValidation<TValue>(Result result) => new(default, result.Error, null, result.CustomProperties);
+        public static implicit operator ResultWithValidation<TValue>(Result<TValue> result) => new(result.Value, result.Error, null, result.CustomProperties);
         public static implicit operator Result(ResultWithValidation<TValue> result) => new(result.Error, result.CustomProperties);
         #endregion
 
