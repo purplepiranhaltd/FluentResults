@@ -1,5 +1,6 @@
 using PurplePiranha.FluentResults.Errors;
 using PurplePiranha.FluentResults.Results;
+using PurplePiranha.FluentResults.Validation.Errors;
 using PurplePiranha.FluentResults.Validation.Results;
 
 namespace PurplePiranha.FluentResults.Validation.Tests
@@ -188,6 +189,54 @@ namespace PurplePiranha.FluentResults.Validation.Tests
                 Assert.Fail();
             });
             Assert.Pass();
+        }
+
+        [Test]
+        public void ResultWithValidationT_Success_CastToResultWithValidation()
+        {
+            var result = (ResultWithValidation)ResultWithValidation.SuccessResult(1);
+            Assert.That(result.IsSuccess, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void ResultWithValidationT_Error_CastToResultWithValidation()
+        {
+            var testError = new Error("Test", "Testing");
+            var result = (ResultWithValidation)ResultWithValidation.ErrorResult<int>(testError);
+            Assert.That(result.IsError, Is.EqualTo(true));
+            Assert.That(result.Error, Is.EqualTo(testError));
+        }
+
+        [Test]
+        public void ResultWithValidationT_ValidationFailure_CastToResultWithValidation()
+        {
+            var result = (ResultWithValidation)ResultWithValidation.ValidationFailureResult<int>(new string[] { "Test", "Testing" });
+            Assert.That(result.IsValidationFailure, Is.EqualTo(true));
+            Assert.That(result.ValidationFailures.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ResultWithValidationT_Success_CastToResult()
+        {
+            var result = (Result)ResultWithValidation.SuccessResult(1);
+            Assert.That(result.IsSuccess, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void ResultWithValidationT_Error_CastToResult()
+        {
+            var testError = new Error("Test", "Testing");
+            var result = (Result)ResultWithValidation.ErrorResult<int>(testError);
+            Assert.That(result.IsError, Is.EqualTo(true));
+            Assert.That(result.Error, Is.EqualTo(testError));
+        }
+
+        [Test]
+        public void ResultWithValidationT_ValidationFailure_CastToResult()
+        {
+            var result = (Result)ResultWithValidation.ValidationFailureResult<int>(new string[] { "Test", "Testing" });
+            Assert.That(result.IsError, Is.EqualTo(true));
+            Assert.That(result.Error, Is.EqualTo(ValidationErrors.ValidationFailure));
         }
     }
 }

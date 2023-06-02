@@ -22,12 +22,15 @@ public class Result
     }
     #endregion
 
+    #region Methods
+    
+    #endregion
+
     #region Static create methods
     public static Result SuccessResult() => new(Error.None);
     public static Result ErrorResult(Error error) => new(error);
-    public static Result<TValue> SuccessResult<TValue>(TValue value) => new Result<TValue>(value, Error.None);
-    public static Result<TValue> ErrorResult<TValue>(Error error) => new(default, error);
-    public static Result<TValue> Create<TValue>(TValue? value) => value is not null ? SuccessResult(value) : ErrorResult<TValue>(Error.NullValue);
+    public static Result<TValue> SuccessResult<TValue>(TValue value) => new (value, Error.None);
+    public static Result<TValue> ErrorResult<TValue>(Error error) => new (default, error);
     #endregion
 
     #region Public properties

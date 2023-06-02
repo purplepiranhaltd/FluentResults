@@ -105,6 +105,19 @@ public class ResultsTUnitTests
         Assert.Pass();
     }
 
-    
+    [Test]
+    public void ResultT_Success_CastToResult()
+    {
+        var result = (Result)Result.SuccessResult(1);
+        Assert.That(result.IsSuccess, Is.EqualTo(true));
+    }
 
+    [Test]
+    public void ResultT_Error_CastToResult()
+    {
+        var testError = new Error("Test", "Testing");
+        var result = (Result)Result.ErrorResult<int>(testError);
+        Assert.That(result.IsError, Is.EqualTo(true));
+        Assert.That(result.Error, Is.EqualTo(testError));
+    }
 }

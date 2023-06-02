@@ -16,7 +16,6 @@ namespace PurplePiranha.FluentResults.Validation.Results
 
         public ResultWithValidation(Result result) : base(result) { }
         public ResultWithValidation(ResultWithValidation result) : base(result) { }
-
         public new static ResultWithValidation SuccessResult() => new ResultWithValidation(Result.SuccessResult());
         public new static ResultWithValidation ErrorResult(Error error) => new ResultWithValidation(Result.ErrorResult(error));
         public new static ResultWithValidation<TValue> SuccessResult<TValue>(TValue value) => new ResultWithValidation<TValue>(Result.SuccessResult<TValue>(value));
@@ -26,7 +25,7 @@ namespace PurplePiranha.FluentResults.Validation.Results
 
         public static ResultWithValidation<TValue> ValidationFailureResult<TValue>(IEnumerable<string> validationFailures) => new(default, ValidationErrors.ValidationFailure, CreateCustomProperties(validationFailures));
 
-        ////public new static ResultWithValidation<TValue> Create<TValue>(TValue? value) => value is not null ? SuccessResult(value) : ErrorResult<TValue>(Error.NullValue);
+        public new static ResultWithValidation<TValue> Create<TValue>(TValue? value) => value is not null ? SuccessResult(value) : ErrorResult<TValue>(Error.NullValue);
 
         public bool IsValidationFailure => Error == ValidationErrors.ValidationFailure;
         public override bool IsError => _error != Error.None && _error != ValidationErrors.ValidationFailure; // validation failures are not treated as errors
