@@ -4,16 +4,14 @@ namespace PurplePiranha.FluentResults.Results;
 
 public static class ResultExtensions
 {
-    public static Result<TValue> ToResult<TValue>(this Result result) => new Result<TValue>(result);
-
-    public static Result OnSuccess(this Result result, Action action)
+    public static ResultBase OnSuccess(this ResultBase result, Action action)
     {
         if (result.IsSuccess)
             action();
 
         return result;
     }
-    public static Result OnSuccess<T>(this Result<T> result, Action<T?> action)
+    public static ResultBase<T> OnSuccess<T>(this ResultBase<T> result, Action<T?> action)
     {
         if (result.IsSuccess)
             action(result.Value);
@@ -21,7 +19,15 @@ public static class ResultExtensions
         return result;
     }
 
-    public static Result OnError(this Result result, Action<Error> action)
+    public static ResultBase OnError(this ResultBase result, Action<Error> action)
+    {
+        if (result.IsError)
+            action(result.Error);
+
+        return result;
+    }
+
+    public static ResultBase<T> OnError<T>(this ResultBase<T> result, Action<Error> action)
     {
         if (result.IsError)
             action(result.Error);

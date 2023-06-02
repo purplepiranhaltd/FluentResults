@@ -9,27 +9,38 @@ using System.Threading.Tasks;
 
 namespace PurplePiranha.FluentResults.Validation.Results
 {
-    public class ResultWithValidation<TValue> : ResultWithValidation
+    public class ResultWithValidation<TValue> : ResultBase<TValue>
     {
-        #region Fields
-        private readonly TValue? _value;
-        #endregion
-
         #region Ctr
-        protected internal ResultWithValidation(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) => _value = value;
+        protected internal ResultWithValidation(TValue? value, Error error, IEnumerable<string>? validationFailures = null, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
+        {
+            if (_customProperties is null)
+                _customProperties = new Dictionary<string, object>();
 
-        public ResultWithValidation(Result<TValue> result) : base(result) => _value = result.Value;
-        public ResultWithValidation(Result result) : base(result) => _value = default(TValue);
-        public ResultWithValidation(ResultWithValidation<TValue> result) : base(result) => _value = result._value;
-        public ResultWithValidation(ResultWithValidation result) : base(result) => _value = default(TValue);
-        #endregion
-
-        #region Public properties
-        public virtual TValue? Value => _value;
+            if (validationFailures != null)
+                _customProperties.Add(ResultWithValidation.VALIDATION_FAILURE_KEY, validationFailures ?? new List<string>());
+        }
         #endregion
 
         #region Operators
-        public static implicit operator ResultWithValidation<TValue>(TValue? value) => Create(value);
+        public static implicit operator ResultWithValidation<TValue>(ResultWithValidation result) => new(default, result.Error, null, result.CustomProperties);
+        public static implicit operator ResultWithValidation(ResultWithValidation<TValue> result) => new(result.Error, null, result.CustomProperties);
+        public static implicit operator ResultWithValidation<TValue>(Result result) => new(default, result.Error, null, result.CustomProperties);
+        public static implicit operator Result(ResultWithValidation<TValue> result) => new(result.Error, result.CustomProperties);
+        #endregion
+
+        #region Properties
+        public bool IsValidationFailure => Error == ValidationErrors.ValidationFailure;
+        public override bool IsError => _error != Error.None && _error != ValidationErrors.ValidationFailure; // validation failures are not treated as errors
+
+        public IEnumerable<string> ValidationFailures
+        {
+            get
+            {
+                var validationErrors = _customProperties.GetValueOrDefault(ResultWithValidation.VALIDATION_FAILURE_KEY);
+                return (IEnumerable<string>)(validationErrors ?? Enumerable.Empty<string>());
+            }
+        }
         #endregion
 
     }

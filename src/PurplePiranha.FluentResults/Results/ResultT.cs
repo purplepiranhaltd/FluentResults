@@ -1,22 +1,19 @@
 ﻿using PurplePiranha.FluentResults.Errors;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PurplePiranha.FluentResults.Results;
-
-public class Result<TValue> : Result
+namespace PurplePiranha.FluentResults.Results
 {
-    #region Fields
-    private readonly TValue? _value;
-    #endregion
+    public class Result<TValue> : ResultBase<TValue>
+    {
+        public Result(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties) { }
 
-    #region Ctr
-    protected internal Result(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) => _value = value;
-
-    public Result(Result<TValue> result) : base(result) => _value = result._value;
-
-    public Result(Result result) : base(result) => _value = default(TValue);
-    #endregion
-
-    #region Public properties
-    public virtual TValue? Value => _value;
-    #endregion
+        #region Operators
+        public static implicit operator Result<TValue>(Result result) => new(default, result._error, result._customProperties);
+        public static implicit operator Result(Result<TValue> result) => new(result._error, result._customProperties);
+        #endregion
+    }
 }

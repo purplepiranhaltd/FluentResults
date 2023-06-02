@@ -32,7 +32,7 @@ public class ResultsTUnitTests
     public void SuccessResultWithObject_DoesTriggerOnSuccess()
     {
         var result = Result.SuccessResult(5);
-        result.OnSuccess(() =>
+        result.OnSuccess(v =>
         {
             Assert.Pass();
         });
@@ -98,7 +98,7 @@ public class ResultsTUnitTests
     public void ErrorResultWithObject_DoesNotTriggerOnSuccess()
     {
         var result = Result.ErrorResult<int>(Error.NullValue);
-        result.OnSuccess(() =>
+        result.OnSuccess(v =>
         {
             Assert.Fail();
         });
@@ -106,17 +106,17 @@ public class ResultsTUnitTests
     }
 
     [Test]
-    public void ResultT_Success_CastToResult()
+    public void ResultT_Success_ImplicitCastToResult()
     {
-        var result = (Result)Result.SuccessResult(1);
+        Result result = Result.SuccessResult(1);
         Assert.That(result.IsSuccess, Is.EqualTo(true));
     }
 
     [Test]
-    public void ResultT_Error_CastToResult()
+    public void ResultT_Error_ImplicitCastToResult()
     {
         var testError = new Error("Test", "Testing");
-        var result = (Result)Result.ErrorResult<int>(testError);
+        Result result = Result.ErrorResult<int>(testError);
         Assert.That(result.IsError, Is.EqualTo(true));
         Assert.That(result.Error, Is.EqualTo(testError));
     }

@@ -189,7 +189,7 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void Result_Success_ConvertToResultT()
         {
-            var result = Result.SuccessResult().ToResult<int>();
+            Result<int> result = Result.SuccessResult();
             Assert.That(result.IsSuccess, Is.EqualTo(true));
             Assert.That(result.Value, Is.EqualTo(default(int)));
         }
@@ -198,7 +198,7 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         public void Result_Error_ConvertToResultT()
         {
             var testError = new Error("Test", "Testing");
-            var result = Result.ErrorResult(testError).ToResult<int>();
+            Result<int> result = Result.ErrorResult(testError);
             Assert.That(result.IsError, Is.EqualTo(true));
             Assert.That(result.Error, Is.EqualTo(testError));
         }

@@ -17,6 +17,14 @@ namespace PurplePiranha.FluentResults.Validation.Results
             return result;
         }
 
+        public static ResultWithValidation<T> OnValidationFailure<T>(this ResultWithValidation<T> result, Action<IEnumerable<string>> action)
+        {
+            if (result.IsValidationFailure)
+                action(result.ValidationFailures);
+
+            return result;
+        }
+
         public static ResultWithValidation<T> OnSuccess<T>(this ResultWithValidation<T> result, Action<T?> action)
         {
             if (result.IsSuccess)
@@ -24,7 +32,5 @@ namespace PurplePiranha.FluentResults.Validation.Results
 
             return result;
         }
-
-
     }
 }
