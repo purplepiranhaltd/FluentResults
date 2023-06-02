@@ -47,5 +47,9 @@ namespace PurplePiranha.FluentResults.Validation.Results
                 return (IEnumerable<string>)(validationErrors ?? Enumerable.Empty<string>());
             }
         }
+
+        #region Operators
+        public static implicit operator ResultWithValidation(Result result) => new(result.Error, null, result.CustomProperties);
+        #endregion
     }
 }
