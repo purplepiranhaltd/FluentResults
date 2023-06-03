@@ -1,4 +1,5 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using FluentValidation.Results;
+using PurplePiranha.FluentResults.Errors;
 using PurplePiranha.FluentResults.Results;
 using PurplePiranha.FluentResults.Validation.Errors;
 using System;
@@ -12,39 +13,39 @@ namespace PurplePiranha.FluentResults.Validation.Results
     public class ResultWithValidation : ResultBase
     {
         #region Fields
-        protected internal const string VALIDATION_FAILURE_KEY = "ValidationFailure";
+        protected internal const string VALIDATION_RESULT_KEY = "ValidationResult";
         #endregion
 
         #region Ctr
-        protected internal ResultWithValidation(Error error, IEnumerable<string>? validationFailures = null, Dictionary<string, object>? customProperties = null) : base(error, customProperties) 
+        protected internal ResultWithValidation(Error error, ValidationResult? validationResult = null, Dictionary<string, object>? customProperties = null) : base(error, customProperties) 
         { 
             if (_customProperties is null)
                 _customProperties = new Dictionary<string, object>();
             
-            if (validationFailures != null)
-                _customProperties.Add(VALIDATION_FAILURE_KEY, validationFailures ?? new List<string>());
+            if (validationResult is not null)
+                _customProperties.Add(VALIDATION_RESULT_KEY, validationResult);
         }
         #endregion
 
         #region Static create methods
-        public static ResultWithValidation SuccessResult() => new(Error.None);
-        public static ResultWithValidation ErrorResult(Error error) => new(error);
-        public static ResultWithValidation<TValue> SuccessResult<TValue>(TValue value) => new(value, Error.None);
-        public static ResultWithValidation<TValue> ErrorResult<TValue>(Error error) => new(default, error);
-        public static ResultWithValidation ValidationFailureResult(IEnumerable<string> validationFailures) => new(ValidationErrors.ValidationFailure, validationFailures);
+        public static ResultWithValidation SuccessResult(ValidationResult? validationResult = null) => new(Error.None, validationResult);
+        public static ResultWithValidation ErrorResult(Error error, ValidationResult? validationResult = null) => new(error, validationResult);
+        public static ResultWithValidation<TValue> SuccessResult<TValue>(TValue value, ValidationResult? validationResult = null) => new(value, Error.None, validationResult);
+        public static ResultWithValidation<TValue> ErrorResult<TValue>(Error error, ValidationResult? validationResult = null) => new(default, error, validationResult);
+        public static ResultWithValidation ValidationFailureResult(ValidationResult validationResult) => new(ValidationErrors.ValidationFailure, validationResult);
 
-        public static ResultWithValidation<TValue> ValidationFailureResult<TValue>(IEnumerable<string> validationFailures) => new(default, ValidationErrors.ValidationFailure, validationFailures);
+        public static ResultWithValidation<TValue> ValidationFailureResult<TValue>(ValidationResult validationResult) => new(default, ValidationErrors.ValidationFailure, validationResult);
         #endregion
 
         public bool IsValidationFailure => Error == ValidationErrors.ValidationFailure;
         public override bool IsError => _error != Error.None && _error != ValidationErrors.ValidationFailure; // validation failures are not treated as errors
 
-        public IEnumerable<string> ValidationFailures
+        public ValidationResult? ValidationResult
         {
             get
             {
-                var validationErrors = _customProperties.GetValueOrDefault(VALIDATION_FAILURE_KEY);
-                return (IEnumerable<string>)(validationErrors ?? Enumerable.Empty<string>());
+                var validationResult = _customProperties.GetValueOrDefault(VALIDATION_RESULT_KEY);
+                return (ValidationResult?)validationResult;
             }
         }
 

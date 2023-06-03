@@ -1,4 +1,5 @@
-﻿using PurplePiranha.FluentResults.Results;
+﻿using FluentValidation.Results;
+using PurplePiranha.FluentResults.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,18 @@ namespace PurplePiranha.FluentResults.Validation.Results
 {
     public static class ResultWithValidationExtensions
     {
-        public static ResultWithValidation OnValidationFailure(this ResultWithValidation result, Action<IEnumerable<string>> action)
+        public static ResultWithValidation OnValidationFailure(this ResultWithValidation result, Action<ValidationResult?> action)
         {
             if (result.IsValidationFailure)
-                action(result.ValidationFailures);
+                action(result.ValidationResult);
 
             return result;
         }
 
-        public static ResultWithValidation<T> OnValidationFailure<T>(this ResultWithValidation<T> result, Action<IEnumerable<string>> action)
+        public static ResultWithValidation<T> OnValidationFailure<T>(this ResultWithValidation<T> result, Action<ValidationResult?> action)
         {
             if (result.IsValidationFailure)
-                action(result.ValidationFailures);
+                action(result.ValidationResult);
 
             return result;
         }

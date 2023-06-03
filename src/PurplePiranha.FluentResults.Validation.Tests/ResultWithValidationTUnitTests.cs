@@ -1,3 +1,5 @@
+using FluentValidation.Results;
+using Moq;
 using PurplePiranha.FluentResults.Errors;
 using PurplePiranha.FluentResults.Results;
 using PurplePiranha.FluentResults.Validation.Errors;
@@ -7,13 +9,11 @@ namespace PurplePiranha.FluentResults.Validation.Tests
 {
     public class ResultWithValidationTUnitTests
     {
-        private IEnumerable<string> DummyValidationErrors { get; }
+        private ValidationResult _validationResult { get; }
 
         public ResultWithValidationTUnitTests()
         {
-            var dummyValidationErrors = new List<string>();
-            dummyValidationErrors.Add("Dummy Validation Error!");
-            DummyValidationErrors = dummyValidationErrors;
+            _validationResult = new ValidationResult(new List<ValidationFailure> { new ValidationFailure("Test", "Dummy Validation Error"), new ValidationFailure("Test2", "Dummy Validation Error 2") });
         }
 
         [SetUp]
@@ -60,14 +60,14 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ValidationFailureResultWithObject_DoesReturnValidationFailure()
         {
-            var result = ResultWithValidation.ValidationFailureResult<int>(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult<int>(_validationResult);
             Assert.That(result.IsValidationFailure, Is.True);
         }
 
         [Test]
         public void ValidationFailureResultWithObject_DoesTriggerOnValidationFailure()
         {
-            var result = ResultWithValidation.ValidationFailureResult<int>(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult<int>(_validationResult);
             result.OnValidationFailure(v =>
             {
                 Assert.Pass();
@@ -78,14 +78,14 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ValidationFailureResultWithObject_DoesNotReturnError()
         {
-            var result = ResultWithValidation.ValidationFailureResult<int>(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult<int>(_validationResult);
             Assert.That(result.IsError, Is.False);
         }
 
         [Test]
         public void ValidationFailureResultWithObject_DoesNotTriggerOnError()
         {
-            var result = ResultWithValidation.ValidationFailureResult<int>(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult<int>(_validationResult);
             result.OnError(e =>
             {
                 Assert.Fail();
@@ -96,7 +96,7 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ValidationFailureResultWithObject_DoesNotReturnSuccess()
         {
-            var result = ResultWithValidation.ValidationFailureResult<int>(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult<int>(_validationResult);
             Assert.That(result.IsSuccess, Is.False);
         }
 
@@ -210,9 +210,10 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ResultWithValidationT_ValidationFailure_CastToResultWithValidation()
         {
-            var result = (ResultWithValidation)ResultWithValidation.ValidationFailureResult<int>(new string[] { "Test", "Testing" });
+            var result = (ResultWithValidation)ResultWithValidation.ValidationFailureResult<int>(_validationResult);
             Assert.That(result.IsValidationFailure, Is.EqualTo(true));
-            Assert.That(result.ValidationFailures.Count, Is.EqualTo(2));
+            Assert.That(result.ValidationResult, Is.Not.Null);
+            Assert.That(result.ValidationResult.Errors.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -234,7 +235,7 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ResultWithValidationT_ValidationFailure_CastToResult()
         {
-            var result = (Result)ResultWithValidation.ValidationFailureResult<int>(new string[] { "Test", "Testing" });
+            var result = (Result)ResultWithValidation.ValidationFailureResult<int>(_validationResult);
             Assert.That(result.IsError, Is.EqualTo(true));
             Assert.That(result.Error, Is.EqualTo(ValidationErrors.ValidationFailure));
         }

@@ -1,3 +1,5 @@
+using FluentValidation.Results;
+using Moq;
 using PurplePiranha.FluentResults.Errors;
 using PurplePiranha.FluentResults.Results;
 using PurplePiranha.FluentResults.Validation.Results;
@@ -6,13 +8,11 @@ namespace PurplePiranha.FluentResults.Validation.Tests
 {
     public class ResultWithValidationUnitTests
     {
-        private IEnumerable<string> DummyValidationErrors { get; }
+        private ValidationResult _validationResult { get; }
 
         public ResultWithValidationUnitTests()
         {
-            var dummyValidationErrors = new List<string>();
-            dummyValidationErrors.Add("Dummy Validation Error!");
-            DummyValidationErrors = dummyValidationErrors;
+            _validationResult = new ValidationResult(new List<ValidationFailure> { new ValidationFailure("Test", "Dummy Validation Error"), new ValidationFailure("Test2", "Dummy Validation Error 2") });
         }
 
         [SetUp]
@@ -135,14 +135,14 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ValidationFailureResultWithoutObject_DoesReturnValidationFailure()
         {
-            var result = ResultWithValidation.ValidationFailureResult(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult(_validationResult);
             Assert.That(result.IsValidationFailure, Is.True);
         }
 
         [Test]
         public void ValidationFailureResultWithoutObject_DoesTriggerOnValidationFailure()
         {
-            var result = ResultWithValidation.ValidationFailureResult(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult(_validationResult);
             result.OnValidationFailure(v =>
             {
                 Assert.Pass();
@@ -153,14 +153,14 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ValidationFailureResultWithoutObject_DoesNotReturnError()
         {
-            var result = ResultWithValidation.ValidationFailureResult(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult(_validationResult);
             Assert.That(result.IsError, Is.False);
         }
 
         [Test]
         public void ValidationFailureResultWithoutObject_DoesNotTriggerOnError()
         {
-            var result = ResultWithValidation.ValidationFailureResult(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult(_validationResult);
             result.OnError(e =>
             {
                 Assert.Fail();
@@ -171,7 +171,7 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         [Test]
         public void ValidationFailureResultWithoutObject_DoesNotReturnSuccess()
         {
-            var result = ResultWithValidation.ValidationFailureResult(DummyValidationErrors);
+            var result = ResultWithValidation.ValidationFailureResult(_validationResult);
             Assert.That(result.IsSuccess, Is.False);
         }
 

@@ -1,4 +1,5 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using FluentValidation.Results;
+using PurplePiranha.FluentResults.Errors;
 using PurplePiranha.FluentResults.Results;
 using PurplePiranha.FluentResults.Validation.Errors;
 using System;
@@ -12,13 +13,13 @@ namespace PurplePiranha.FluentResults.Validation.Results
     public class ResultWithValidation<TValue> : ResultBase<TValue>
     {
         #region Ctr
-        protected internal ResultWithValidation(TValue? value, Error error, IEnumerable<string>? validationFailures = null, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
+        protected internal ResultWithValidation(TValue? value, Error error, ValidationResult? validationResult = null, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
         {
             if (_customProperties is null)
                 _customProperties = new Dictionary<string, object>();
 
-            if (validationFailures != null)
-                _customProperties.Add(ResultWithValidation.VALIDATION_FAILURE_KEY, validationFailures ?? new List<string>());
+            if (validationResult != null)
+                _customProperties.Add(ResultWithValidation.VALIDATION_RESULT_KEY, validationResult);
         }
         #endregion
 
@@ -34,12 +35,12 @@ namespace PurplePiranha.FluentResults.Validation.Results
         public bool IsValidationFailure => Error == ValidationErrors.ValidationFailure;
         public override bool IsError => _error != Error.None && _error != ValidationErrors.ValidationFailure; // validation failures are not treated as errors
 
-        public IEnumerable<string> ValidationFailures
+        public ValidationResult? ValidationResult
         {
             get
             {
-                var validationErrors = _customProperties.GetValueOrDefault(ResultWithValidation.VALIDATION_FAILURE_KEY);
-                return (IEnumerable<string>)(validationErrors ?? Enumerable.Empty<string>());
+                var validationResult = _customProperties.GetValueOrDefault(ResultWithValidation.VALIDATION_RESULT_KEY);
+                return (ValidationResult?)validationResult;
             }
         }
         #endregion
