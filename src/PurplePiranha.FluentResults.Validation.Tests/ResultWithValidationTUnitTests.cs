@@ -118,7 +118,7 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         public void SuccessResultWithObject_DoesTriggerOnSuccess()
         {
             var result = ResultWithValidation.SuccessResult(5);
-            result.OnSuccess(() =>
+            result.OnSuccess(v =>
             {
                 Assert.Pass();
             });
@@ -184,7 +184,7 @@ namespace PurplePiranha.FluentResults.Validation.Tests
         public void ErrorResultWithObject_DoesNotTriggerOnSuccess()
         {
             var result = ResultWithValidation.ErrorResult<int>(Error.NullValue);
-            result.OnSuccess(() =>
+            result.OnSuccess(v =>
             {
                 Assert.Fail();
             });
