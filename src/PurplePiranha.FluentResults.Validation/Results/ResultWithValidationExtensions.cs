@@ -18,11 +18,12 @@ namespace PurplePiranha.FluentResults.Validation.Results
 
             return result;
         }
-        public static ResultWithValidation<T> OnSuccess<T>(this ResultWithValidation<T> result, Action<T?> action)
+        public static ResultWithValidation<T> OnSuccess<T>(this ResultWithValidation<T> result, Action<T> action)
         {
+#nullable disable
             if (result.IsSuccess)
                 action(result.Value);
-
+#nullable enable
             return result;
         }
 
@@ -42,19 +43,21 @@ namespace PurplePiranha.FluentResults.Validation.Results
             return result;
         }
 
-        public static ResultWithValidation OnValidationFailure(this ResultWithValidation result, Action<ValidationResult?> action)
+        public static ResultWithValidation OnValidationFailure(this ResultWithValidation result, Action<ValidationResult> action)
         {
+#nullable disable
             if (result.IsValidationFailure)
                 action(result.ValidationResult);
-
+#nullable enable
             return result;
         }
 
-        public static ResultWithValidation<T> OnValidationFailure<T>(this ResultWithValidation<T> result, Action<ValidationResult?> action)
+        public static ResultWithValidation<T> OnValidationFailure<T>(this ResultWithValidation<T> result, Action<ValidationResult> action)
         {
+#nullable disable
             if (result.IsValidationFailure)
                 action(result.ValidationResult);
-
+#nullable enable
             return result;
         }
     }

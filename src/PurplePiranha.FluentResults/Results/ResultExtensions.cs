@@ -11,11 +11,12 @@ public static class ResultExtensions
 
         return result;
     }
-    public static Result<T> OnSuccess<T>(this Result<T> result, Action<T?> action)
+    public static Result<T> OnSuccess<T>(this Result<T> result, Action<T> action)
     {
+#nullable disable
         if (result.IsSuccess)
             action(result.Value);
-
+#nullable enable
         return result;
     }
 
