@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurplePiranha.FluentResults
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurplePiranha.FluentResults.Tests", "PurplePiranha.FluentResults.Tests\PurplePiranha.FluentResults.Tests.csproj", "{8EAF1867-A495-472F-BE1A-6B5CB3BD0444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurplePiranha.FluentResults.Validation", "PurplePiranha.FluentResults.Validation\PurplePiranha.FluentResults.Validation.csproj", "{E20F668E-5BA2-4CB1-852E-345C1F45958F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurplePiranha.FluentResults.Validation", "PurplePiranha.FluentResults.Validation\PurplePiranha.FluentResults.Validation.csproj", "{E20F668E-5BA2-4CB1-852E-345C1F45958F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurplePiranha.FluentResults.Validation.Tests", "PurplePiranha.FluentResults.Validation.Tests\PurplePiranha.FluentResults.Validation.Tests.csproj", "{8D7A79F3-4399-4EFD-AB66-94F8845F43F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurplePiranha.FluentResults.Validation.Tests", "PurplePiranha.FluentResults.Validation.Tests\PurplePiranha.FluentResults.Validation.Tests.csproj", "{8D7A79F3-4399-4EFD-AB66-94F8845F43F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurplePiranha.FluentResults.Validation.ActionValidationResults", "PurplePiranha.FluentResults.Validation.ActionValidationResults\PurplePiranha.FluentResults.Validation.ActionValidationResults.csproj", "{6848B53E-D891-48A6-9D7B-69C22CA687E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8D7A79F3-4399-4EFD-AB66-94F8845F43F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D7A79F3-4399-4EFD-AB66-94F8845F43F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D7A79F3-4399-4EFD-AB66-94F8845F43F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6848B53E-D891-48A6-9D7B-69C22CA687E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6848B53E-D891-48A6-9D7B-69C22CA687E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6848B53E-D891-48A6-9D7B-69C22CA687E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6848B53E-D891-48A6-9D7B-69C22CA687E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
