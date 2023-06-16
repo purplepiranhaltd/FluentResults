@@ -8,6 +8,7 @@
 	  <Company>Purple Piranha Limited</Company>
 	  <Description>
 		  FluentResults allows results to be accessed in a fluent manner to determine their success or failure.
+		  This package adds a ResultWithValidation which allows the handling of validation failures seperately from errors.
 	  </Description>
 	  <RepositoryUrl>https://github.com/purplepiranhaltd/FluentResults</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>
