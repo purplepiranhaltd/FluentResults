@@ -44,7 +44,9 @@ jobs:
       run: dotnet pack PurplePiranha.FluentResults/PurplePiranha.FluentResults.csproj --configuration Release /p:Version=${VERSION} --no-build --output ${{ env.NuGetDirectory }} --include-symbols -p:SymbolPackageFormat=snupkg
     - name: Create Nuget Package (PurplePiranha.FluentResults.Validation)
       run: dotnet pack PurplePiranha.FluentResults.Validation/PurplePiranha.FluentResults.Validation.csproj --configuration Release /p:Version=${VERSION} --no-build --output ${{ env.NuGetDirectory }} --include-symbols -p:SymbolPackageFormat=snupkg
-    - name: Push Nuget Package
+    - name: Create Nuget Package (PurplePiranha.FluentResults.Validation.ActionValidationResults)
+      run: dotnet pack PurplePiranha.FluentResults.Validation.ActionValidationResults/PurplePiranha.FluentResults.Validation.ActionValidationResults.csproj --configuration Release /p:Version=${VERSION} --no-build --output ${{ env.NuGetDirectory }} --include-symbols -p:SymbolPackageFormat=snupkg
+    - name: Push Nuget Packages
       run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg --api-key $API_KEY --source $SOURCE
       env:
         SOURCE: https://api.nuget.org/v3/index.json
