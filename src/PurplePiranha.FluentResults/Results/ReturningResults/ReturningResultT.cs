@@ -1,47 +1,49 @@
-﻿////using PurplePiranha.FluentResults.Errors;
-////using System;
-////using System.Collections.Generic;
-////using System.Linq;
-////using System.Text;
-////using System.Threading.Tasks;
+﻿using PurplePiranha.FluentResults.Errors;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-////namespace PurplePiranha.FluentResults.Results.ReturningResults
-////{
-////    public class ReturningResult<TValue, TReturn> :
-////        Result<TValue>,
-////        IReturningResult<TValue, TReturn>,
-////        IReturningResultWithOnSuccess<TValue, TReturn>,
-////        IReturningResultWithOnError<TValue, TReturn>
-////    {
-////        private TReturn _returnValue;
+namespace PurplePiranha.FluentResults.Results.ReturningResults
+{
+    public class ReturningResult<TValue, TReturn> :
+        Result<TValue>,
+        IReturningResultInitialState<TValue, TReturn>,
+        IReturningResultWithOnSuccess<TValue, TReturn>,
+        IReturningResultWithOnError<TValue, TReturn>
+    {
+        private TReturn _returnValue;
 
-////        TValue? IReturningResultWithValue<TValue, TReturn>.Value => base.Value;
+        public ReturningResult(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
+        {
+        }
 
-////        bool IReturningResult<TReturn>.IsSuccess => base.IsSuccess;
+        public ReturningResult(Result<TValue> result) : base(result.Value, result.Error, result.CustomProperties)
+        {
+        }
 
-////        bool IReturningResult<TReturn>.IsError => base.IsError;
+        public IReturningResultWithOnSuccess<TValue, TReturn> OnSuccess(Func<TValue, TReturn> func)
+        {
+#nullable disable
+            if (IsSuccess)
+                _returnValue = func(Value);
+#nullable enable
 
-////        Error? IReturningResult<TReturn>.Error => base.Error;
+            return this;
+        }
 
-////        public ReturningResult(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
-////        {
-////        }
+        public IReturningResultWithOnError<TValue, TReturn> OnError(Func<Error, TReturn> func)
+        {
+            if (IsError)
+                _returnValue = func(Error);
 
-////        public ReturningResult(Result<TValue> result) : base(result.Value, result.Error, result.CustomProperties)
-////        {
-////        }
+            return this;
+        }
 
-////        void IReturningResult<TReturn>.SetReturnValue(TReturn returnValue)
-////        {
-////            _returnValue = returnValue;
-////        }
-
-////        TReturn IReturningResult<TReturn>.GetReturnValue()
-////        {
-////            if (_returnValue is null)
-////                throw new ArgumentNullException(nameof(_returnValue));
-
-////            return _returnValue;
-////        }
-////    }
-////}
+        public TReturn Return()
+        {
+            return _returnValue;
+        }
+    }
+}

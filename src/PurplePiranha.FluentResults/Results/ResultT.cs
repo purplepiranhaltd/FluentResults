@@ -17,11 +17,11 @@ namespace PurplePiranha.FluentResults.Results
         public static implicit operator Result(Result<TValue> result) => new(result._error, result._customProperties);
         #endregion
 
-        ////#region Returning Results
-        ////public IReturningResult<TReturn> Returning<TReturn>()
-        ////{
-        ////    return new ReturningResult<TValue,TReturn>(this);
-        ////}
-        ////#endregion
+        #region Returning Results
+        public IReturningResultInitialState<TValue, TReturn> Returning<TReturn>()
+        {
+            return new ReturningResult<TValue, TReturn>(this);
+        }
+        #endregion
     }
 }

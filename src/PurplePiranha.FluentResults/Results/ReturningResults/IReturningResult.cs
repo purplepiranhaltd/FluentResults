@@ -35,17 +35,17 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
     public interface IReturningResult<TValue, TReturn> : IReturningResult<TReturn>
     {
-
+        TValue? Value { get; }
     }
 
     public interface IReturningResultInitialState<TValue, TReturn> : IReturningResult<TValue, TReturn>
     {
-        IReturningResultWithOnSuccess<TReturn> OnSuccess(Func<TValue, TReturn> func);
+        IReturningResultWithOnSuccess<TValue, TReturn> OnSuccess(Func<TValue, TReturn> func);
     }
 
     public interface IReturningResultWithOnSuccess<TValue, TReturn> : IReturningResult<TValue, TReturn>
     {
-        IReturningResultWithOnError<TReturn> OnError(Func<Error, TReturn> func);
+        IReturningResultWithOnError<TValue, TReturn> OnError(Func<Error, TReturn> func);
     }
 
     public interface IReturningResultWithOnError<TValue, TReturn> : IReturningResult<TValue, TReturn>
