@@ -1,4 +1,5 @@
 ﻿using PurplePiranha.FluentResults.Errors;
+using PurplePiranha.FluentResults.Results.ReturningResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,18 @@ namespace PurplePiranha.FluentResults.Results
         public static Result ErrorResult(Error error) => new(error);
         public static Result<TValue> SuccessResult<TValue>(TValue value) => new(value, Error.None);
         public static Result<TValue> ErrorResult<TValue>(Error error) => new(default, error);
+        #endregion
+
+        #region Returning Results
+        public IReturningResultInitialState<TReturn> Returning<TReturn>()
+        {
+            return new ReturningResult<TReturn>(this);
+        }
+
+        public IAsyncReturningResultInitialState<TReturn> AsyncReturning<TReturn>()
+        {
+            return new AsyncReturningResult<TReturn>(this);
+        }
         #endregion
     }
 }

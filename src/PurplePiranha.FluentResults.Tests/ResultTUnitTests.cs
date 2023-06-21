@@ -3,9 +3,9 @@ using PurplePiranha.FluentResults.Results;
 
 namespace PurplePiranha.FluentResults.Tests;
 
-public class ResultsTUnitTests
+public class ResultTUnitTests
 {
-    public ResultsTUnitTests()
+    public ResultTUnitTests()
     {
     }
 
