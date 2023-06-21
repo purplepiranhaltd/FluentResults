@@ -22,6 +22,11 @@ namespace PurplePiranha.FluentResults.Results
         {
             return new ReturningResult<TValue, TReturn>(this);
         }
+
+        public IAsyncReturningResultInitialState<TValue, TReturn> AsyncReturning<TReturn>()
+        {
+            return new AsyncReturningResult<TValue, TReturn>(this);
+        }
         #endregion
     }
 }

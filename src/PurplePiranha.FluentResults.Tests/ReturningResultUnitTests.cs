@@ -147,4 +147,61 @@ public class ReturningResultUnitTests
 
         Assert.That(v, Is.EqualTo(500));
     }
+
+    [Test]
+    public async Task SuccessResultT_DoesReturnCorrectValue_Async()
+    {
+        var v = await Result
+            .SuccessResult(500)
+            .AsyncReturning<int>()
+            .OnSuccess(async v =>
+            {
+                return 67;
+            })
+            .OnError(async e =>
+            {
+                return 82;
+            })
+            .ReturnAsync();
+
+        Assert.That(v, Is.EqualTo(67));
+    }
+
+    [Test]
+    public async Task ErrorResultT_DoesReturnCorrectValue_Async()
+    {
+        var v = await Result
+            .ErrorResult<int>(new Error("Test", "Testing"))
+            .AsyncReturning<int>()
+            .OnSuccess(async v =>
+            {
+                return 67;
+            })
+            .OnError(async e =>
+            {
+                return 82;
+            })
+            .ReturnAsync();
+
+        Assert.That(v, Is.EqualTo(82));
+    }
+
+    [Test]
+    public async Task SuccessResultT_HasCorrectResultValue_Async()
+    {
+        var v = await Result
+            .SuccessResult(500)
+            .AsyncReturning<int>()
+            .OnSuccess(async v =>
+            {
+                return v;
+            })
+            .OnError(async e =>
+            {
+                return 82;
+            })
+            .ReturnAsync();
+
+        Assert.That(v, Is.EqualTo(500));
+    }
 }

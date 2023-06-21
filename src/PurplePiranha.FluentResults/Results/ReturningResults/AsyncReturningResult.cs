@@ -50,10 +50,5 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
         {
             return _returnTask;
         }
-
-        void IAsyncReturningResult<TReturn>.SetReturnTask(Task<TReturn> task)
-        {
-            _returnTask = task;
-        }
     }
 }
