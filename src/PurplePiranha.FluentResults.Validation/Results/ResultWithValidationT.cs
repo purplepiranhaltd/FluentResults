@@ -2,6 +2,7 @@
 using PurplePiranha.FluentResults.Errors;
 using PurplePiranha.FluentResults.Results;
 using PurplePiranha.FluentResults.Validation.Errors;
+using PurplePiranha.FluentResults.Validation.Results.ReturningResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,5 +46,16 @@ namespace PurplePiranha.FluentResults.Validation.Results
         }
         #endregion
 
+        #region Returning Results
+        public IReturningResultWithValidationInitialState<TValue, TReturn> Returning<TReturn>()
+        {
+            return new ReturningResultWithValidation<TValue, TReturn>(this);
+        }
+
+        public IAsyncReturningResultWithValidationInitialState<TValue, TReturn> AsyncReturning<TReturn>()
+        {
+            return new AsyncReturningResultWithValidation<TValue, TReturn>(this);
+        }
+        #endregion
     }
 }

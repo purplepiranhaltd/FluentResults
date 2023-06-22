@@ -2,6 +2,7 @@
 using PurplePiranha.FluentResults.Errors;
 using PurplePiranha.FluentResults.Results;
 using PurplePiranha.FluentResults.Validation.Errors;
+using PurplePiranha.FluentResults.Validation.Results.ReturningResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,18 @@ namespace PurplePiranha.FluentResults.Validation.Results
 
         #region Operators
         public static implicit operator ResultWithValidation(Result result) => new(result.Error, null, result.CustomProperties);
+        #endregion
+
+        #region Returning Results
+        public IReturningResultWithValidationInitialState<TReturn> Returning<TReturn>()
+        {
+            return new ReturningResultWithValidation<TReturn>(this);
+        }
+
+        public IAsyncReturningResultWithValidationInitialState<TReturn> AsyncReturning<TReturn>()
+        {
+            return new AsyncReturningResultWithValidation<TReturn>(this);
+        }
         #endregion
     }
 }
