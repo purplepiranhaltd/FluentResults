@@ -33,6 +33,65 @@ result
     // do something like log the error (held in e) or throw an exception
   });
 ```
+# Returning values based on a Result's success or failure
+```
+// Result without value returning an int based on outcome
+var a = result
+  .Returning<int>()
+  .OnSuccess(() =>
+  {
+    return 100;
+  })
+  .OnError(e => {
+    return -1;
+  })
+  .Return();
+
+// Result without value returning an int asynchronously or throwing an exception if there's an error
+var b = await result
+  .AsyncReturning<int>()
+  .OnSuccess(async () =>
+  {
+    return await GetSomethingAsync();
+  })
+  .OnError(async e =>
+  {
+    throw new SomethingWentWrongException(e);
+  })
+  .ReturnAsync();
+
+// Result with a value returning that value or throwing an exception if there's an error
+var c = result
+  .Returning<int>()
+  .OnSuccess(v =>
+  {
+    return v;
+  })
+  .OnError(e => {
+    throw new SomethingWentWrongException(e);
+  })
+  .Return();
+
+// Result used within a Controller method returning IActionResult
+ [HttpPost]
+public async Task<IActionResult> Register(RegisterViewModel model)
+{
+  ...
+
+  return await result
+      .AsyncReturningActionResult()
+      .OnSuccess(async user => {
+          await LoginUser(user);
+          return RedirectToAction(nameof(VerifyEmailAddress));
+      })
+      .OnError(async e => {
+          ModelState.AddModelError(string.Empty, "An error occured.");
+          return View(model);
+      })
+      .ReturnAsync()
+      ;
+}
+```
 
 # Validation
 A 'ResultWithValidation' available in the 'Validation' package is a special kind of Result that contains validation failures.
@@ -69,39 +128,3 @@ result
     // do something like log the error (held in e) or throw an exception
   });
 ```
-
-# Returning an IActionResult when using a ResultWithValidation in a controller
-An 'ActionValidationResult' is available in the 'Validation.ActionValidationResults' package.
-
-This gives us the ability to convert an existing ResultWithValidation to an 'ActionValidationResult' so that we can easily return from a controller action in a fluent manner.
-
-Note: Currently this is only available for results return a value (ResultWithValidation<T>).
-```
-// Convert ResultWithValidation to ActionValidationResult
-var myResultWithValidation = ResultWithValidation.SuccessResult(1000);      // or VailidationFailureResult/ErrorResult
-var myActionValidationResult = myResultWithValidation.AsActionValidationResult();
-
-// Return correct IActionResult from controller
-public async Task<IActionResult> DoSomething(DoSomethingViewModel model)
-{
-  ...
-  return await result
-    .OnSuccess(async v => {
-        await DoSomethingElse(v);
-        return RedirectToAction("MyCrazyAction");
-    })
-    .OnValidationFailure(async vf => {
-        foreach (var f in vf.Errors)
-        {
-            ModelState.AddModelError(string.Empty, f.ErrorMessage);
-        }
-
-        return View(model);
-    })
-    .OnError(async e => {
-        ModelState.AddModelError(string.Empty, "An error occured.");
-        return View(model);
-    })
-    .ActionResult()
-    ;
-}
