@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +15,11 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
     {
         private TReturn _returnValue;
 
-        public ReturningResult(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
+        public ReturningResult(TValue? value, FailureType error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
         {
         }
 
-        public ReturningResult(Result<TValue> result) : base(result.Value, result.Error, result.CustomProperties)
+        public ReturningResult(Result<TValue> result) : base(result.Value, result.FailureType, result.CustomProperties)
         {
         }
 
@@ -33,10 +33,10 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
             return this;
         }
 
-        public IReturningResultWithOnError<TValue, TReturn> OnError(Func<Error, TReturn> func)
+        public IReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, TReturn> func)
         {
-            if (IsError)
-                _returnValue = func(Error);
+            if (IsFailure)
+                _returnValue = func(FailureType);
 
             return this;
         }

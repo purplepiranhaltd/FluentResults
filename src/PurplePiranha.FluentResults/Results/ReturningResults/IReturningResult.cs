@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +11,8 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
     public interface IReturningResult<TReturn>
     {
         bool IsSuccess { get; }
-        bool IsError { get; }
-        Error? Error { get; }
+        bool IsFailure { get; }
+        FailureType? FailureType { get; }
     }
     #endregion
     #region Without value
@@ -23,7 +23,7 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
     public interface IReturningResultWithOnSuccess<TReturn> : IReturningResult<TReturn>
     {
-        IReturningResultWithOnError<TReturn> OnError(Func<Error, TReturn> func);
+        IReturningResultWithOnError<TReturn> OnError(Func<FailureType, TReturn> func);
     }
 
     public interface IReturningResultWithOnError<TReturn> : IReturningResult<TReturn>
@@ -45,7 +45,7 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
     public interface IReturningResultWithOnSuccess<TValue, TReturn> : IReturningResult<TValue, TReturn>
     {
-        IReturningResultWithOnError<TValue, TReturn> OnError(Func<Error, TReturn> func);
+        IReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, TReturn> func);
     }
 
     public interface IReturningResultWithOnError<TValue, TReturn> : IReturningResult<TValue, TReturn>

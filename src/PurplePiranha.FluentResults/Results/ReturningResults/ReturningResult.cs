@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +18,15 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
         bool IReturningResult<TReturn>.IsSuccess => base.IsSuccess;
 
-        bool IReturningResult<TReturn>.IsError => base.IsError;
+        bool IReturningResult<TReturn>.IsFailure => base.IsFailure;
 
-        Error? IReturningResult<TReturn>.Error => base.Error;
+        FailureType? IReturningResult<TReturn>.FailureType => base.FailureType;
 
-        public ReturningResult(Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties)
+        public ReturningResult(FailureType error, Dictionary<string, object>? customProperties = null) : base(error, customProperties)
         {
         }
 
-        public ReturningResult(Result result) : base(result.Error, result.CustomProperties)
+        public ReturningResult(Result result) : base(result.FailureType, result.CustomProperties)
         {
         }
 
@@ -38,11 +38,11 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
             return this;
         }
 
-        public IReturningResultWithOnError<TReturn> OnError(Func<Error, TReturn> func)
+        public IReturningResultWithOnError<TReturn> OnError(Func<FailureType, TReturn> func)
         {
 #nullable disable
-            if (IsError)
-                _returnValue = func(Error);
+            if (IsFailure)
+                _returnValue = func(FailureType);
 #nullable enable
 
             return this;

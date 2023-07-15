@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 using PurplePiranha.FluentResults.Results.ReturningResults;
 using System;
 using System.Collections.Generic;
@@ -28,12 +28,12 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
     public interface IAsyncReturningResultWithOnSuccess<TReturn> : IAsyncReturningResult<TReturn>
     {
-        IAsyncReturningResultWithOnError<TReturn> OnError(Func<Error, Task<TReturn>> func);
+        IAsyncReturningResultWithOnError<TReturn> OnError(Func<FailureType, Task<TReturn>> func);
     }
 
     public interface IAsyncReturningResultWithOnSuccess<TValue, TReturn> : IAsyncReturningResult<TValue, TReturn>
     {
-        IAsyncReturningResultWithOnError<TValue, TReturn> OnError(Func<Error, Task<TReturn>> func);
+        IAsyncReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, Task<TReturn>> func);
     }
 
     public interface IAsyncReturningResultWithOnError<TReturn> : IAsyncReturningResult<TReturn>

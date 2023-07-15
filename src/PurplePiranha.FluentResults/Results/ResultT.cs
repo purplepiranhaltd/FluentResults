@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 using PurplePiranha.FluentResults.Results.ReturningResults;
 using System;
 using System.Collections.Generic;
@@ -10,11 +10,11 @@ namespace PurplePiranha.FluentResults.Results
 {
     public class Result<TValue> : ResultBase<TValue>
     {
-        public Result(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties) { }
+        public Result(TValue? value, FailureType failureType, Dictionary<string, object>? customProperties = null) : base(value, failureType, customProperties) { }
 
         #region Operators
-        public static implicit operator Result<TValue>(Result result) => new(default, result._error, result._customProperties);
-        public static implicit operator Result(Result<TValue> result) => new(result._error, result._customProperties);
+        public static implicit operator Result<TValue>(Result result) => new(default, result._failureType, result._customProperties);
+        public static implicit operator Result(Result<TValue> result) => new(result._failureType, result._customProperties);
         #endregion
 
         #region Returning Results

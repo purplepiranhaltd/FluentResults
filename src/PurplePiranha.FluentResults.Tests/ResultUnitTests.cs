@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 using PurplePiranha.FluentResults.Results;
 
 namespace PurplePiranha.FluentResults.Tests;
@@ -36,14 +36,14 @@ public class ResultUnitTests
     public void SuccessResultWithoutObject_DoesNotReturnError()
     {
         var result = Result.SuccessResult();
-        Assert.That(result.IsError, Is.False);
+        Assert.That(result.IsFailure, Is.False);
     }
 
     [Test]
     public void SuccessResultWithoutObject_DoesNotTriggerOnError()
     {
         var result = Result.SuccessResult();
-        result.OnError(e =>
+        result.OnFailure(e =>
         {
             Assert.Fail();
         });
@@ -55,16 +55,16 @@ public class ResultUnitTests
     [Test]
     public void ErrorResultWithoutObject_DoesReturnError()
     {
-        var result = Result.ErrorResult(Error.NullValue);
-        Assert.That(result.IsError, Is.True);
-        Assert.That(result.Error, Is.EqualTo(Error.NullValue));
+        var result = Result.FailureResult(FailureType.NullValue);
+        Assert.That(result.IsFailure, Is.True);
+        Assert.That(result.FailureType, Is.EqualTo(FailureType.NullValue));
     }
 
     [Test]
     public void ErrorResultWithoutObject_DoesTriggerOnError()
     {
-        var result = Result.ErrorResult(Error.NullValue);
-        result.OnError(e =>
+        var result = Result.FailureResult(FailureType.NullValue);
+        result.OnFailure(e =>
         {
             Assert.Pass();
         });
@@ -74,14 +74,14 @@ public class ResultUnitTests
     [Test]
     public void ErrorResultWithoutObject_DoesNotReturnSuccess()
     {
-        var result = Result.ErrorResult(Error.NullValue);
+        var result = Result.FailureResult(FailureType.NullValue);
         Assert.That(result.IsSuccess, Is.False);
     }
 
     [Test]
     public void ErrorResultWithoutObject_DoesNotTriggerOnSuccess()
     {
-        var result = Result.ErrorResult(Error.NullValue);
+        var result = Result.FailureResult(FailureType.NullValue);
         result.OnSuccess(() =>
         {
             Assert.Fail();
@@ -100,9 +100,9 @@ public class ResultUnitTests
     [Test]
     public void Result_Error_ImplicitCastToResultT()
     {
-        var testError = new Error("Test", "Testing");
-        Result<int> result = Result.ErrorResult(testError);
-        Assert.That(result.IsError, Is.EqualTo(true));
-        Assert.That(result.Error, Is.EqualTo(testError));
+        var testError = new FailureType("Test", "Testing");
+        Result<int> result = Result.FailureResult(testError);
+        Assert.That(result.IsFailure, Is.EqualTo(true));
+        Assert.That(result.FailureType, Is.EqualTo(testError));
     }
 }

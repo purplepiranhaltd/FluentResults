@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using PurplePiranha.FluentResults.Errors;
+using PurplePiranha.FluentResults.FailureTypes;
 using PurplePiranha.FluentResults.Results;
 using PurplePiranha.FluentResults.Results.ReturningResults;
 using PurplePiranha.FluentResults.Results.ReturningResults.ActionResults;
@@ -46,7 +46,7 @@ public class ReturningResultUnitTests
     public void ErrorResult_DoesReturnCorrectValue()
     {
         var v = Result
-            .ErrorResult(new Error("Test", "Testing"))
+            .FailureResult(new FailureType("Test", "Testing"))
             .Returning<int>()
             .OnSuccess(() =>
             {
@@ -84,7 +84,7 @@ public class ReturningResultUnitTests
     public async Task ErrorResult_DoesReturnCorrectValue_Async()
     {
         var v = await Result
-            .ErrorResult(new Error("Test", "Testing"))
+            .FailureResult(new FailureType("Test", "Testing"))
             .AsyncReturning<int>()
             .OnSuccess(async () =>
             {
@@ -122,7 +122,7 @@ public class ReturningResultUnitTests
     public void ErrorResultT_DoesReturnCorrectValue()
     {
         var v = Result
-            .ErrorResult<int>(new Error("Test", "Testing"))
+            .FailureResult<int>(new FailureType("Test", "Testing"))
             .Returning<int>()
             .OnSuccess(v =>
             {
@@ -179,7 +179,7 @@ public class ReturningResultUnitTests
     public async Task ErrorResultT_DoesReturnCorrectValue_Async()
     {
         var v = await Result
-            .ErrorResult<int>(new Error("Test", "Testing"))
+            .FailureResult<int>(new FailureType("Test", "Testing"))
             .AsyncReturning<int>()
             .OnSuccess(async v =>
             {
@@ -236,7 +236,7 @@ public class ReturningResultUnitTests
     public void ErrorResult_ActionResult_ReturnsCorrectAction()
     {
         var v = Result
-            .ErrorResult(new Error("Test", "Testing"))
+            .FailureResult(new FailureType("Test", "Testing"))
             .ReturningActionResult()
             .OnSuccess(() =>
             {
@@ -274,7 +274,7 @@ public class ReturningResultUnitTests
     public void ErrorResultT_ActionResult_ReturnsCorrectAction()
     {
         var v = Result
-            .ErrorResult<int>(new Error("Test", "Testing"))
+            .FailureResult<int>(new FailureType("Test", "Testing"))
             .ReturningActionResult()
             .OnSuccess(v =>
             {
@@ -312,7 +312,7 @@ public class ReturningResultUnitTests
     public async Task ErrorResult_ActionResult_ReturnsCorrectAction_Async()
     {
         var v = await Result
-            .ErrorResult(new Error("Test", "Testing"))
+            .FailureResult(new FailureType("Test", "Testing"))
             .AsyncReturningActionResult()
             .OnSuccess(async () =>
             {
@@ -350,7 +350,7 @@ public class ReturningResultUnitTests
     public async Task ErrorResultT_ActionResult_ReturnsCorrectAction_Async()
     {
         var v = await Result
-            .ErrorResult<int>(new Error("Test", "Testing"))
+            .FailureResult<int>(new FailureType("Test", "Testing"))
             .AsyncReturningActionResult()
             .OnSuccess(async v =>
             {

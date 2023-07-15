@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 
 namespace PurplePiranha.FluentResults.Results;
 
@@ -20,18 +20,18 @@ public static class ResultExtensions
         return result;
     }
 
-    public static Result OnError(this Result result, Action<Error> action)
+    public static Result OnFailure(this Result result, Action<FailureType> action)
     {
-        if (result.IsError)
-            action(result.Error);
+        if (result.IsFailure)
+            action(result.FailureType);
 
         return result;
     }
 
-    public static Result<T> OnError<T>(this Result<T> result, Action<Error> action)
+    public static Result<T> OnFailure<T>(this Result<T> result, Action<FailureType> action)
     {
-        if (result.IsError)
-            action(result.Error);
+        if (result.IsFailure)
+            action(result.FailureType);
 
         return result;
     }

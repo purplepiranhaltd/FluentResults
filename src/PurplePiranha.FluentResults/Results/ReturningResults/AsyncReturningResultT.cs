@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,25 +16,25 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
     {
         private Task<TReturn> _returnTask;
 
-        public AsyncReturningResult(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
+        public AsyncReturningResult(TValue? value, FailureType error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
         {
         }
 
 
-        public AsyncReturningResult(Result<TValue> result) : base(result.Value, result.Error, result.CustomProperties)
+        public AsyncReturningResult(Result<TValue> result) : base(result.Value, result.FailureType, result.CustomProperties)
         {
         }
 
         bool IReturningResult<TReturn>.IsSuccess => base.IsSuccess;
 
-        bool IReturningResult<TReturn>.IsError => base.IsError;
+        bool IReturningResult<TReturn>.IsFailure => base.IsFailure;
 
-        Error? IReturningResult<TReturn>.Error => base.Error;
+        FailureType? IReturningResult<TReturn>.FailureType => base.FailureType;
 
-        public IAsyncReturningResultWithOnError<TValue, TReturn> OnError(Func<Error, Task<TReturn>> func)
+        public IAsyncReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, Task<TReturn>> func)
         {
-            if (this.IsError)
-                _returnTask = func(Error);
+            if (this.IsFailure)
+                _returnTask = func(FailureType);
 
             return this;
         }

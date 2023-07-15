@@ -1,4 +1,4 @@
-﻿using PurplePiranha.FluentResults.Errors;
+﻿using PurplePiranha.FluentResults.FailureTypes;
 
 namespace PurplePiranha.FluentResults.Results;
 
@@ -9,11 +9,7 @@ public abstract class ResultBase<TValue> : ResultBase
     #endregion
 
     #region Ctr
-    protected internal ResultBase(TValue? value, Error error, Dictionary<string, object>? customProperties = null) : base(error, customProperties) => _value = value;
-
-    //public Result(Result<TValue> result) : base(result) => _value = result._value;
-
-    //public Result(Result result) : base(result) => _value = default(TValue);
+    protected internal ResultBase(TValue? value, FailureType failureType, Dictionary<string, object>? customProperties = null) : base(failureType, customProperties) => _value = value;
     #endregion
 
     #region Properties
