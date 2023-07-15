@@ -52,14 +52,14 @@ public class ResultTUnitTests
     }
 
     [Test]
-    public void SuccessResultWithObject_DoesNotReturnError()
+    public void SuccessResultWithObject_DoesNotReturnFailure()
     {
         var result = Result.SuccessResult(5);
         Assert.That(result.IsFailure, Is.False);
     }
 
     [Test]
-    public void SuccessResultWithObject_DoesNotTriggerOnError()
+    public void SuccessResultWithObject_DoesNotTriggerOnFailure()
     {
         var result = Result.SuccessResult(5);
         result.OnFailure(e =>
@@ -70,16 +70,16 @@ public class ResultTUnitTests
     }
 
     [Test]
-    public void ErrorResultWithObject_DoesReturnError()
+    public void FailureResultWithObject_DoesReturnFailure()
     {
-        var result = Result.FailureResult<int>(FailureType.NullValue);
+        var result = Result.FailureResult<int>(new NullValueFailure());
         Assert.That(result.IsFailure, Is.True);
     }
 
     [Test]
-    public void ErrorResultWithObject_DoesTriggerOnError()
+    public void FailureResultWithObject_DoesTriggerOnFailure()
     {
-        var result = Result.FailureResult<int>(FailureType.NullValue);
+        var result = Result.FailureResult<int>(new NullValueFailure());
         result.OnFailure(e =>
         {
             Assert.Pass();
@@ -88,16 +88,16 @@ public class ResultTUnitTests
     }
 
     [Test]
-    public void ErrorResultWithObject_DoesNotReturnSuccess()
+    public void FailureResultWithObject_DoesNotReturnSuccess()
     {
-        var result = Result.FailureResult<int>(FailureType.NullValue);
+        var result = Result.FailureResult<int>(new NullValueFailure());
         Assert.That(result.IsSuccess, Is.False);
     }
 
     [Test]
-    public void ErrorResultWithObject_DoesNotTriggerOnSuccess()
+    public void FailureResultWithObject_DoesNotTriggerOnSuccess()
     {
-        var result = Result.FailureResult<int>(FailureType.NullValue);
+        var result = Result.FailureResult<int>(new NullValueFailure());
         result.OnSuccess(v =>
         {
             Assert.Fail();
@@ -113,11 +113,36 @@ public class ResultTUnitTests
     }
 
     [Test]
-    public void ResultT_Error_ImplicitCastToResult()
+    public void ResultT_Failure_ImplicitCastToResult()
     {
-        var testError = new FailureType("Test", "Testing");
-        Result result = Result.FailureResult<int>(testError);
+        var testFailure = new NullValueFailure();
+        Result result = Result.FailureResult<int>(testFailure);
         Assert.That(result.IsFailure, Is.EqualTo(true));
-        Assert.That(result.FailureType, Is.EqualTo(testError));
+        Assert.That(result.Failure, Is.EqualTo(testFailure));
+    }
+
+    [Test]
+    public void ResultT_FailureWithObject_ObjectIsAccessibleAndCorrectValue()
+    {
+        var testFailure = new WithDummyObjectFailure("Test", "Testing", new DummyObject(10, 2));
+        Result<int> result = Result.FailureResult<int>(testFailure);
+        Assert.That(result.IsFailure, Is.EqualTo(true));
+        Assert.That(result.Failure, Is.TypeOf(testFailure.GetType()));
+
+        result.OnSuccess(v =>
+        {
+            Assert.Fail();
+        })
+        .OnFailure(f => {
+            if (f is WithDummyObjectFailure dof)
+            {
+                var obj = dof.DummyObject;
+                Assert.That(obj.X, Is.EqualTo(10));
+                Assert.That(obj.Y, Is.EqualTo(2));
+                Assert.Pass();
+            }
+        });
+
+        Assert.Fail();
     }
 }

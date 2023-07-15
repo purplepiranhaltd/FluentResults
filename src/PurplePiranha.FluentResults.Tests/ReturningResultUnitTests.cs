@@ -33,7 +33,7 @@ public class ReturningResultUnitTests
             {
                 return 67;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return 82;
             })
@@ -43,16 +43,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public void ErrorResult_DoesReturnCorrectValue()
+    public void FailureResult_DoesReturnCorrectValue()
     {
         var v = Result
-            .FailureResult(new FailureType("Test", "Testing"))
+            .FailureResult(new NullValueFailure())
             .Returning<int>()
             .OnSuccess(() =>
             {
                 return 67;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return 82;
             })
@@ -71,7 +71,7 @@ public class ReturningResultUnitTests
             {
                 return await Task.FromResult(67);
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return await Task.FromResult(82);
             })
@@ -81,16 +81,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public async Task ErrorResult_DoesReturnCorrectValue_Async()
+    public async Task FailureResult_DoesReturnCorrectValue_Async()
     {
         var v = await Result
-            .FailureResult(new FailureType("Test", "Testing"))
+            .FailureResult(new NullValueFailure())
             .AsyncReturning<int>()
             .OnSuccess(async () =>
             {
                 return await Task.FromResult(67);
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return await Task.FromResult(82);
             })
@@ -109,7 +109,7 @@ public class ReturningResultUnitTests
             {
                 return 67;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return 82;
             })
@@ -119,16 +119,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public void ErrorResultT_DoesReturnCorrectValue()
+    public void FailureResultT_DoesReturnCorrectValue()
     {
         var v = Result
-            .FailureResult<int>(new FailureType("Test", "Testing"))
+            .FailureResult<int>(new NullValueFailure())
             .Returning<int>()
             .OnSuccess(v =>
             {
                 return 67;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return 82;
             })
@@ -147,7 +147,7 @@ public class ReturningResultUnitTests
             {
                 return v;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return 82;
             })
@@ -166,7 +166,7 @@ public class ReturningResultUnitTests
             {
                 return 67;
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return 82;
             })
@@ -176,16 +176,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public async Task ErrorResultT_DoesReturnCorrectValue_Async()
+    public async Task FailureResultT_DoesReturnCorrectValue_Async()
     {
         var v = await Result
-            .FailureResult<int>(new FailureType("Test", "Testing"))
+            .FailureResult<int>(new NullValueFailure())
             .AsyncReturning<int>()
             .OnSuccess(async v =>
             {
                 return 67;
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return 82;
             })
@@ -204,7 +204,7 @@ public class ReturningResultUnitTests
             {
                 return v;
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return 82;
             })
@@ -223,7 +223,7 @@ public class ReturningResultUnitTests
             {
                 return _acceptedResult;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return _badRequestResult;
             })
@@ -233,16 +233,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public void ErrorResult_ActionResult_ReturnsCorrectAction()
+    public void FailureResult_ActionResult_ReturnsCorrectAction()
     {
         var v = Result
-            .FailureResult(new FailureType("Test", "Testing"))
+            .FailureResult(new NullValueFailure())
             .ReturningActionResult()
             .OnSuccess(() =>
             {
                 return _acceptedResult;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return _badRequestResult;
             })
@@ -261,7 +261,7 @@ public class ReturningResultUnitTests
             {
                 return _acceptedResult;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return _badRequestResult;
             })
@@ -271,16 +271,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public void ErrorResultT_ActionResult_ReturnsCorrectAction()
+    public void FailureResultT_ActionResult_ReturnsCorrectAction()
     {
         var v = Result
-            .FailureResult<int>(new FailureType("Test", "Testing"))
+            .FailureResult<int>(new NullValueFailure())
             .ReturningActionResult()
             .OnSuccess(v =>
             {
                 return _acceptedResult;
             })
-            .OnError(e =>
+            .OnFailure(e =>
             {
                 return _badRequestResult;
             })
@@ -299,7 +299,7 @@ public class ReturningResultUnitTests
             {
                 return _acceptedResult;
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return _badRequestResult;
             })
@@ -309,16 +309,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public async Task ErrorResult_ActionResult_ReturnsCorrectAction_Async()
+    public async Task FailureResult_ActionResult_ReturnsCorrectAction_Async()
     {
         var v = await Result
-            .FailureResult(new FailureType("Test", "Testing"))
+            .FailureResult(new NullValueFailure())
             .AsyncReturningActionResult()
             .OnSuccess(async () =>
             {
                 return _acceptedResult;
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return _badRequestResult;
             })
@@ -337,7 +337,7 @@ public class ReturningResultUnitTests
             {
                 return _acceptedResult;
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return _badRequestResult;
             })
@@ -347,16 +347,16 @@ public class ReturningResultUnitTests
     }
 
     [Test]
-    public async Task ErrorResultT_ActionResult_ReturnsCorrectAction_Async()
+    public async Task FailureResultT_ActionResult_ReturnsCorrectAction_Async()
     {
         var v = await Result
-            .FailureResult<int>(new FailureType("Test", "Testing"))
+            .FailureResult<int>(new NullValueFailure())
             .AsyncReturningActionResult()
             .OnSuccess(async v =>
             {
                 return _acceptedResult;
             })
-            .OnError(async e =>
+            .OnFailure(async e =>
             {
                 return _badRequestResult;
             })

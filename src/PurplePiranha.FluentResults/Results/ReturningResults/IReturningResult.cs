@@ -12,7 +12,7 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
     {
         bool IsSuccess { get; }
         bool IsFailure { get; }
-        FailureType? FailureType { get; }
+        Failure? Failure { get; }
     }
     #endregion
     #region Without value
@@ -23,10 +23,10 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
     public interface IReturningResultWithOnSuccess<TReturn> : IReturningResult<TReturn>
     {
-        IReturningResultWithOnError<TReturn> OnError(Func<FailureType, TReturn> func);
+        IReturningResultWithOnFailure<TReturn> OnFailure(Func<Failure, TReturn> func);
     }
 
-    public interface IReturningResultWithOnError<TReturn> : IReturningResult<TReturn>
+    public interface IReturningResultWithOnFailure<TReturn> : IReturningResult<TReturn>
     {
         TReturn Return();
     }
@@ -45,10 +45,10 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
     public interface IReturningResultWithOnSuccess<TValue, TReturn> : IReturningResult<TValue, TReturn>
     {
-        IReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, TReturn> func);
+        IReturningResultWithOnFailure<TValue, TReturn> OnFailure(Func<Failure, TReturn> func);
     }
 
-    public interface IReturningResultWithOnError<TValue, TReturn> : IReturningResult<TValue, TReturn>
+    public interface IReturningResultWithOnFailure<TValue, TReturn> : IReturningResult<TValue, TReturn>
     {
         TReturn Return();
     }

@@ -9,7 +9,7 @@ public abstract class ResultBase<TValue> : ResultBase
     #endregion
 
     #region Ctr
-    protected internal ResultBase(TValue? value, FailureType failureType, Dictionary<string, object>? customProperties = null) : base(failureType, customProperties) => _value = value;
+    protected internal ResultBase(TValue? value, Failure failureType, Dictionary<string, object>? customProperties = null) : base(failureType, customProperties) => _value = value;
     #endregion
 
     #region Properties

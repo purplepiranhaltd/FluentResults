@@ -5,30 +5,30 @@ namespace PurplePiranha.FluentResults.Results;
 public abstract class ResultBase
 {
     #region Fields
-    protected internal FailureType _failureType;
+    protected internal Failure _failure;
     protected internal Dictionary<string, object> _customProperties; // allows the use of custom properties in derived classes
     #endregion
 
     #region Ctr
-    protected internal ResultBase(FailureType error, Dictionary<string, object>? customProperties = null)
+    protected internal ResultBase(Failure failure, Dictionary<string, object>? customProperties = null)
     {
-        _failureType = error;
+        _failure = failure;
         _customProperties = customProperties ?? new Dictionary<string, object>();
     }
 
     protected internal ResultBase(ResultBase result)
     {
-        _failureType = result._failureType;
+        _failure = result._failure;
         _customProperties = result._customProperties;
     }
     #endregion
 
     #region Public properties
-    public virtual FailureType FailureType => _failureType;
+    public virtual Failure Failure => _failure;
 
-    public virtual bool IsSuccess => _failureType == FailureType.None;
+    public virtual bool IsSuccess => _failure is NoFailure;
     
-    public virtual bool IsFailure => _failureType != FailureType.None;
+    public virtual bool IsFailure => _failure is not NoFailure;
 
     public Dictionary<string,object> CustomProperties => _customProperties;
     #endregion

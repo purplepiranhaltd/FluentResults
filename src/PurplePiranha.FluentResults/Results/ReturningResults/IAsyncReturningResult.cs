@@ -28,20 +28,20 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
     public interface IAsyncReturningResultWithOnSuccess<TReturn> : IAsyncReturningResult<TReturn>
     {
-        IAsyncReturningResultWithOnError<TReturn> OnError(Func<FailureType, Task<TReturn>> func);
+        IAsyncReturningResultWithOnFailure<TReturn> OnFailure(Func<Failure, Task<TReturn>> func);
     }
 
     public interface IAsyncReturningResultWithOnSuccess<TValue, TReturn> : IAsyncReturningResult<TValue, TReturn>
     {
-        IAsyncReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, Task<TReturn>> func);
+        IAsyncReturningResultWithOnFailure<TValue, TReturn> OnFailure(Func<Failure, Task<TReturn>> func);
     }
 
-    public interface IAsyncReturningResultWithOnError<TReturn> : IAsyncReturningResult<TReturn>
+    public interface IAsyncReturningResultWithOnFailure<TReturn> : IAsyncReturningResult<TReturn>
     {
         Task<TReturn> ReturnAsync();
     }
 
-    public interface IAsyncReturningResultWithOnError<TValue, TReturn> : IAsyncReturningResult<TValue, TReturn>
+    public interface IAsyncReturningResultWithOnFailure<TValue, TReturn> : IAsyncReturningResult<TValue, TReturn>
     {
         Task<TReturn> ReturnAsync();
     }

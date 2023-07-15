@@ -11,16 +11,16 @@ namespace PurplePiranha.FluentResults.Results
     public class Result : ResultBase
     {
         #region Ctr
-        public Result(FailureType failureType, Dictionary<string, object>? customProperties = null) : base(failureType, customProperties)
+        public Result(Failure failure, Dictionary<string, object>? customProperties = null) : base(failure, customProperties)
         {
         }
         #endregion
 
         #region Static create methods
-        public static Result SuccessResult() => new(FailureType.None);
-        public static Result FailureResult(FailureType error) => new(error);
-        public static Result<TValue> SuccessResult<TValue>(TValue value) => new(value, FailureType.None);
-        public static Result<TValue> FailureResult<TValue>(FailureType error) => new(default, error);
+        public static Result SuccessResult() => new(new NoFailure());
+        public static Result FailureResult(Failure failure) => new(failure);
+        public static Result<TValue> SuccessResult<TValue>(TValue value) => new(value, new NoFailure());
+        public static Result<TValue> FailureResult<TValue>(Failure failure) => new(default, failure);
         #endregion
 
         #region Returning Results

@@ -10,11 +10,11 @@ namespace PurplePiranha.FluentResults.Results
 {
     public class Result<TValue> : ResultBase<TValue>
     {
-        public Result(TValue? value, FailureType failureType, Dictionary<string, object>? customProperties = null) : base(value, failureType, customProperties) { }
+        public Result(TValue? value, Failure failureType, Dictionary<string, object>? customProperties = null) : base(value, failureType, customProperties) { }
 
         #region Operators
-        public static implicit operator Result<TValue>(Result result) => new(default, result._failureType, result._customProperties);
-        public static implicit operator Result(Result<TValue> result) => new(result._failureType, result._customProperties);
+        public static implicit operator Result<TValue>(Result result) => new(default, result._failure, result._customProperties);
+        public static implicit operator Result(Result<TValue> result) => new(result._failure, result._customProperties);
         #endregion
 
         #region Returning Results

@@ -11,17 +11,17 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
         Result<TValue>,
         IAsyncReturningResultInitialState<TValue, TReturn>,
         IAsyncReturningResultWithOnSuccess<TValue, TReturn>,
-        IAsyncReturningResultWithOnError<TValue, TReturn>
+        IAsyncReturningResultWithOnFailure<TValue, TReturn>
 
     {
         private Task<TReturn> _returnTask;
 
-        public AsyncReturningResult(TValue? value, FailureType error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
+        public AsyncReturningResult(TValue? value, Failure failure, Dictionary<string, object>? customProperties = null) : base(value, failure, customProperties)
         {
         }
 
 
-        public AsyncReturningResult(Result<TValue> result) : base(result.Value, result.FailureType, result.CustomProperties)
+        public AsyncReturningResult(Result<TValue> result) : base(result.Value, result.Failure, result.CustomProperties)
         {
         }
 
@@ -29,12 +29,12 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
         bool IReturningResult<TReturn>.IsFailure => base.IsFailure;
 
-        FailureType? IReturningResult<TReturn>.FailureType => base.FailureType;
+        Failure? IReturningResult<TReturn>.Failure => base.Failure;
 
-        public IAsyncReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, Task<TReturn>> func)
+        public IAsyncReturningResultWithOnFailure<TValue, TReturn> OnFailure(Func<Failure, Task<TReturn>> func)
         {
             if (this.IsFailure)
-                _returnTask = func(FailureType);
+                _returnTask = func(Failure);
 
             return this;
         }

@@ -20,18 +20,18 @@ public static class ResultExtensions
         return result;
     }
 
-    public static Result OnFailure(this Result result, Action<FailureType> action)
+    public static Result OnFailure(this Result result, Action<Failure> action)
     {
         if (result.IsFailure)
-            action(result.FailureType);
+            action(result.Failure);
 
         return result;
     }
 
-    public static Result<T> OnFailure<T>(this Result<T> result, Action<FailureType> action)
+    public static Result<T> OnFailure<T>(this Result<T> result, Action<Failure> action)
     {
         if (result.IsFailure)
-            action(result.FailureType);
+            action(result.Failure);
 
         return result;
     }

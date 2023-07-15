@@ -11,15 +11,15 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
         Result<TValue>,
         IReturningResultInitialState<TValue, TReturn>,
         IReturningResultWithOnSuccess<TValue, TReturn>,
-        IReturningResultWithOnError<TValue, TReturn>
+        IReturningResultWithOnFailure<TValue, TReturn>
     {
         private TReturn _returnValue;
 
-        public ReturningResult(TValue? value, FailureType error, Dictionary<string, object>? customProperties = null) : base(value, error, customProperties)
+        public ReturningResult(TValue? value, Failure failure, Dictionary<string, object>? customProperties = null) : base(value, failure, customProperties)
         {
         }
 
-        public ReturningResult(Result<TValue> result) : base(result.Value, result.FailureType, result.CustomProperties)
+        public ReturningResult(Result<TValue> result) : base(result.Value, result.Failure, result.CustomProperties)
         {
         }
 
@@ -33,10 +33,10 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
             return this;
         }
 
-        public IReturningResultWithOnError<TValue, TReturn> OnError(Func<FailureType, TReturn> func)
+        public IReturningResultWithOnFailure<TValue, TReturn> OnFailure(Func<Failure, TReturn> func)
         {
             if (IsFailure)
-                _returnValue = func(FailureType);
+                _returnValue = func(Failure);
 
             return this;
         }
