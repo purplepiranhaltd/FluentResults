@@ -1,4 +1,5 @@
 ﻿using PurplePiranha.FluentResults.FailureTypes;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PurplePiranha.FluentResults.Results;
 
@@ -14,5 +15,11 @@ public abstract class ResultBase<TValue> : ResultBase
 
     #region Properties
     public virtual TValue? Value => _value;
+
+    [MemberNotNullWhen(true, nameof(Value))]
+    public override bool IsSuccess => base.IsSuccess;
+
+    [MemberNotNullWhen(false, nameof(Value))]
+    public override bool IsFailure => base.IsFailure;
     #endregion
 }
