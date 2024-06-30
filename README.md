@@ -1,7 +1,7 @@
 # FluentResults
 FluentResults allows results to be accessed in a fluent manner to determine their success or failure.
 
-The result object allows the return of 'Success' or 'Error'. Result objects can be created in the following manner:
+The result object allows the return of 'Success' or 'Failure'. Result objects can be created in the following manner:
 
 ```
 // A successful result
@@ -10,8 +10,8 @@ var result = Result.SuccessResult();
 // A success result that has a return value
 var result = Result.SuccessResult(57);
 
-// An error result
-var result = Result.ErrorResult(Error.NullValue);
+// A failure result
+var result = Result.FailureResult(Error.NullValue);
 ```
 Accessing the results is done via the fluent interface:
 ```
@@ -20,7 +20,7 @@ result
   .OnSuccess(() => {
     // do something
   })
-  .OnError(e => {
+  .OnFailure(failure => {
     // do something like log the error (held in e) or throw an exception
   });
   
@@ -29,7 +29,7 @@ result
   .OnSuccess(r => {
     // do something with the result (held in r)
   })
-  .OnError(e => {
+  .OnFailure(failure => {
     // do something like log the error (held in e) or throw an exception
   });
 ```
@@ -42,7 +42,7 @@ var a = result
   {
     return 100;
   })
-  .OnError(e => {
+  .OnFailure(failure => {
     return -1;
   })
   .Return();
@@ -54,9 +54,9 @@ var b = await result
   {
     return await GetSomethingAsync();
   })
-  .OnError(async e =>
+  .OnFailure(async failure =>
   {
-    throw new SomethingWentWrongException(e);
+    throw new SomethingWentWrongException(failure);
   })
   .ReturnAsync();
 
@@ -67,13 +67,13 @@ var c = result
   {
     return v;
   })
-  .OnError(e => {
+  .OnFailure(e => {
     throw new SomethingWentWrongException(e);
   })
   .Return();
 
 // Result used within a Controller method returning IActionResult
- [HttpPost]
+[HttpPost]
 public async Task<IActionResult> Register(RegisterViewModel model)
 {
   ...
@@ -84,7 +84,7 @@ public async Task<IActionResult> Register(RegisterViewModel model)
           await LoginUser(user);
           return RedirectToAction(nameof(VerifyEmailAddress));
       })
-      .OnError(async e => {
+      .OnFailure(async failure => {
           ModelState.AddModelError(string.Empty, "An error occured.");
           return View(model);
       })
@@ -93,38 +93,30 @@ public async Task<IActionResult> Register(RegisterViewModel model)
 }
 ```
 
-# Validation
-A 'ResultWithValidation' available in the 'Validation' package is a special kind of Result that contains validation failures.
+# Defining Failures
+It's recommented that you create a base class for failures in your application. For large systems you may also want to go a step further and seperate areas or modules.
+
 ```
-// Create a validation failure result
-var validationErrors = new List<string>();
-validationErrors.Add("Email address is required.");
-validationErrors.Add("Password does not meet complexity requirements.");
-var validationFailureResult = ResultWithValidation.ValidationFailureResult(validationErrors);
+public abstract class MyApplicationFailure : Failure
+{
+  public MyApplicationFailure(
+    string failureName,
+    string message,
+    object? obj = null
+    ) : base($"Dummy.MyApplication.{failureName}", message, obj) { }
+}
 ```
-Accessing the results is done via the fluent interface:
+Failures are then created by extending this class.
+
+The example below shows how you can create a failure from the result of the [FluentValidation](https://www.nuget.org/packages/fluentvalidation/) library.
+
 ```
-// Results without a return value
-result
-  .OnSuccess(() => {
-    // do something
-  })
-  .OnValidationFailure(v => {
-    // report back to user validation failures (held in v)
-  })
-  .OnError(e => {
-    // do something like log the error (held in e) or throw an exception
-  });
-  
-// Results with a return value
-result
-  .OnSuccess(r => {
-    // do something with the result (held in r)
-  })
-  .OnValidationFailure(v => {
-    // report back to user validation failures (held in v)
-  })
-  .OnError(e => {
-    // do something like log the error (held in e) or throw an exception
-  });
+public class ValidationFailure : MyApplicationFailure
+{
+    public ValidationFailure(ValidationResult validationResult) : base(nameof(ValidationFailure), "Validation failed", validationResult)
+    {
+    }
+
+    public ValidationResult ValidationResult => (ValidationResult)base.Obj;
+}
 ```
