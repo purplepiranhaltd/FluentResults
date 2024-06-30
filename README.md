@@ -120,3 +120,36 @@ public class ValidationFailure : MyApplicationFailure
     public ValidationResult ValidationResult => (ValidationResult)base.Obj;
 }
 ```
+This approach to defining failures allows us to then easily check for a particular failure type.
+
+```
+[HttpPost]
+public async Task<IActionResult> Register(RegisterViewModel model)
+{
+  ...
+
+  return await result
+      .AsyncReturningActionResult()
+      .OnSuccess(async user => {
+          await LoginUser(user);
+          return RedirectToAction(nameof(VerifyEmailAddress));
+      })
+      .OnFailure(async failure => {
+
+          if (failure is ValidationFailure validationFailure)
+          {
+              validationFailure.ValidationResult.Errors.ForEach(error => { 
+                  ModelState.AddModelError(error.ErrorCode, error.ErrorMessage);
+              });
+
+            return View(model);
+          }
+
+          if (failure is NotAuthorisedFailure)
+            return StatusCode(401);
+
+          return StatusCode(500);
+      })
+      .ReturnAsync();
+}
+```
