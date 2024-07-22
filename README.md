@@ -11,7 +11,7 @@ var result = Result.SuccessResult();
 var result = Result.SuccessResult(57);
 
 // A failure result
-var result = Result.FailureResult(Error.NullValue);
+var result = Result.FailureResult(new NullValueFailure());
 ```
 Accessing the results is done via the fluent interface:
 ```
