@@ -13,7 +13,7 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
         IReturningResultWithOnSuccess<TValue, TReturn>,
         IReturningResultWithOnFailure<TValue, TReturn>
     {
-        private TReturn _returnValue;
+        private TReturn? _returnValue;
 
         public ReturningResult(TValue? value, Failure failure, Dictionary<string, object>? customProperties = null) : base(value, failure, customProperties)
         {
@@ -25,10 +25,8 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
         public IReturningResultWithOnSuccess<TValue, TReturn> OnSuccess(Func<TValue, TReturn> func)
         {
-#nullable disable
             if (IsSuccess)
                 _returnValue = func(Value);
-#nullable enable
 
             return this;
         }
@@ -43,7 +41,7 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
         public TReturn Return()
         {
-            return _returnValue;
+            return _returnValue!;
         }
     }
 }

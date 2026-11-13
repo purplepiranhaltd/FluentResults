@@ -145,4 +145,30 @@ public class ResultTUnitTests
 
         Assert.Fail();
     }
+
+    [Test]
+    public void ResultT_SuccessWithNullValue_BecomesNullValueFailure()
+    {
+        var result = Result.SuccessResult<string>(null!);
+        Assert.That(result.IsFailure, Is.True);
+        Assert.That(result.Failure, Is.TypeOf<NullValueFailure>());
+    }
+
+    [Test]
+    public void Result_SuccessCastToReferenceResultT_BecomesNullValueFailure()
+    {
+        Result<string> result = Result.SuccessResult();
+        Assert.That(result.IsFailure, Is.True);
+        Assert.That(result.Failure, Is.TypeOf<NullValueFailure>());
+    }
+
+    [Test]
+    public void ResultT_ImplicitCast_DoesNotShareCustomProperties()
+    {
+        var original = Result.SuccessResult(1);
+        original.CustomProperties["a"] = 1;
+        Result converted = original;
+        converted.CustomProperties["b"] = 2;
+        Assert.That(original.CustomProperties.ContainsKey("b"), Is.False);
+    }
 }

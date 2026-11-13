@@ -14,7 +14,7 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
         IAsyncReturningResultWithOnFailure<TReturn>
 
     {
-        private Task<TReturn> _returnTask;
+        private Task<TReturn>? _returnTask;
 
         public AsyncReturningResult(Failure failure, Dictionary<string, object>? customProperties = null) : base(failure, customProperties)
         {
@@ -48,7 +48,7 @@ namespace PurplePiranha.FluentResults.Results.ReturningResults
 
         public Task<TReturn> ReturnAsync()
         {
-            return _returnTask;
+            return _returnTask!;
         }
     }
 }

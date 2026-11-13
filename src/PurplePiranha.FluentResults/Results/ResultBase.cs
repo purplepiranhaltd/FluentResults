@@ -13,13 +13,14 @@ public abstract class ResultBase
     protected internal ResultBase(Failure failure, Dictionary<string, object>? customProperties = null)
     {
         _failure = failure;
-        _customProperties = customProperties ?? new Dictionary<string, object>();
+        // Copy so results never share (and silently mutate) each other's properties.
+        _customProperties = customProperties is null ? new Dictionary<string, object>() : new Dictionary<string, object>(customProperties);
     }
 
     protected internal ResultBase(ResultBase result)
     {
         _failure = result._failure;
-        _customProperties = result._customProperties;
+        _customProperties = new Dictionary<string, object>(result._customProperties);
     }
     #endregion
 

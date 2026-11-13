@@ -10,7 +10,11 @@ public abstract class ResultBase<TValue> : ResultBase
     #endregion
 
     #region Ctr
-    protected internal ResultBase(TValue? value, Failure failureType, Dictionary<string, object>? customProperties = null) : base(failureType, customProperties) => _value = value;
+    protected internal ResultBase(TValue? value, Failure failureType, Dictionary<string, object>? customProperties = null) : base(EnsureValueIfSuccess(value, failureType), customProperties) => _value = value;
+
+    // A success must carry a non-null value, otherwise [MemberNotNullWhen] on IsSuccess would be a lie.
+    private static Failure EnsureValueIfSuccess(TValue? value, Failure failure)
+        => value is null && failure is NoFailure ? new NullValueFailure() : failure;
     #endregion
 
     #region Properties
