@@ -2,7 +2,7 @@
 
 namespace PurplePiranha.FluentResults.Results.ReturningResults.ActionResults
 {
-    public static class ResultExtensions
+    public static class ActionResultExtensions
     {
         public static IReturningResultInitialState<IActionResult> ReturningActionResult(this Result result)
         {
