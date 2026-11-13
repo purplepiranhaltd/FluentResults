@@ -7,8 +7,6 @@ on:
   workflow_dispatch:                   # Allow running the workflow manually from the GitHub UI
   release:
     types: [published]                 # Run the workflow when a new GitHub release is published
-    tags:
-    - "v[0-9]+.[0-9]+.[0-9]+"
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -23,7 +21,7 @@ jobs:
         working-directory: ./src
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Verify commit exists in origin/main
       run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
@@ -31,7 +29,7 @@ jobs:
     - name: Set VERSION variable from tag
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
             8.0.x
@@ -42,10 +40,10 @@ jobs:
       run: dotnet build --configuration Release /p:Version=${VERSION} --no-restore
     - name: Test
       run: dotnet test --configuration Release /p:Version=${VERSION} --no-build --verbosity normal
-    - name: Create Nuget Package (PurplePiranha.FluentResults)
-      run: dotnet pack PurplePiranha.FluentResults/PurplePiranha.FluentResults.csproj --configuration Release /p:Version=${VERSION} --no-build --output ${{ env.NuGetDirectory }} --include-symbols -p:SymbolPackageFormat=snupkg
+    - name: Create Nuget Packages
+      run: dotnet pack PurplePiranha.FluentResults.sln --configuration Release /p:Version=${VERSION} --no-build --output ${{ env.NuGetDirectory }} --include-symbols -p:SymbolPackageFormat=snupkg
     - name: Push Nuget Package(s)
-      run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg --api-key $API_KEY --source $SOURCE
+      run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg --api-key $API_KEY --source $SOURCE --skip-duplicate
       env:
         SOURCE: https://api.nuget.org/v3/index.json
         API_KEY: ${{ secrets.NUGET_FLUENTRESULTS }}

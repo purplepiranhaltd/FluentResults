@@ -21,9 +21,6 @@
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
 	</ItemGroup>
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="../../assets/package-icon.jpg" Pack="true" PackagePath="/" />
 	</ItemGroup>
 </Project>

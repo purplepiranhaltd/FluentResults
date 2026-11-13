@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Authors>Paul @ Purple Piranha</Authors>
+		<Company>Purple Piranha Limited</Company>
+		<Description>
+			ASP.NET Core (IActionResult) helpers for PurplePiranha.FluentResults.
+		</Description>
+		<RepositoryUrl>https://github.com/purplepiranhaltd/FluentResults</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+		<PackageIcon>package-icon.jpg</PackageIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PurplePiranha.FluentResults\PurplePiranha.FluentResults.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="../../assets/package-icon.jpg" Pack="true" PackagePath="/" />
+	</ItemGroup>
+</Project>

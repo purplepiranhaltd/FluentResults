@@ -75,6 +75,7 @@ var c = result
   .Return();
 
 // Result used within a Controller method returning IActionResult
+// (requires the PurplePiranha.FluentResults.AspNetCore package)
 [HttpPost]
 public async Task<IActionResult> Register(RegisterViewModel model)
 {
