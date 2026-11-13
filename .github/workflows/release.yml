@@ -13,6 +13,10 @@ env:
   DOTNET_NOLOGO: true
   NuGetDirectory: ${{ github.workspace}}/nuget
   
+permissions:
+  contents: read
+  id-token: write     # required for NuGet Trusted Publishing (OIDC)
+
 jobs:
   build_and_release:
     runs-on: ubuntu-latest
@@ -42,8 +46,13 @@ jobs:
       run: dotnet test --configuration Release /p:Version=${VERSION} --no-build --verbosity normal
     - name: Create Nuget Packages
       run: dotnet pack PurplePiranha.FluentResults.sln --configuration Release /p:Version=${VERSION} --no-build --output ${{ env.NuGetDirectory }} --include-symbols -p:SymbolPackageFormat=snupkg
+    - name: NuGet login (Trusted Publishing)
+      id: login
+      uses: NuGet/login@v1
+      with:
+        user: ${{ secrets.NUGET_USER }}
     - name: Push Nuget Package(s)
       run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg --api-key $API_KEY --source $SOURCE --skip-duplicate
       env:
         SOURCE: https://api.nuget.org/v3/index.json
-        API_KEY: ${{ secrets.NUGET_FLUENTRESULTS }}
+        API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
