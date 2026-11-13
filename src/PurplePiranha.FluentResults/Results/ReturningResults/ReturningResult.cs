@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PurplePiranha.FluentResults.Results.ReturningResults
 {
-    public class ReturningResult<TReturn> : 
+    internal class ReturningResult<TReturn> : 
         Result,
         IReturningResultInitialState<TReturn>,
         IReturningResultWithOnSuccess<TReturn>,

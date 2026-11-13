@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PurplePiranha.FluentResults.Results.ReturningResults
 {
-    public class AsyncReturningResult<TValue, TReturn> :
+    internal class AsyncReturningResult<TValue, TReturn> :
         Result<TValue>,
         IAsyncReturningResultInitialState<TValue, TReturn>,
         IAsyncReturningResultWithOnSuccess<TValue, TReturn>,

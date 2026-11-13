@@ -130,4 +130,20 @@ public class ResultUnitTests
 
         Assert.Fail();
     }
+
+    [Test]
+    public void Failure_SameCodeAndMessageButDifferentType_NotEqual()
+    {
+        var a = new NullValueFailure();
+        var b = new WithDummyObjectFailure(a.Code, a.Message, new DummyObject(1, 2));
+        Assert.That(a.Equals(b), Is.False);
+        Assert.That(a == b, Is.False);
+    }
+
+    [Test]
+    public void Failure_ImplicitStringConversion_NullThrows()
+    {
+        Failure? failure = null;
+        Assert.Throws<ArgumentNullException>(() => { string _ = failure!; });
+    }
 }

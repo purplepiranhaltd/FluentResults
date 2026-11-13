@@ -2,7 +2,7 @@
 
 public abstract class Failure : IEquatable<Failure>
 {
-    public Failure(string code, string message, object? obj = null)
+    protected Failure(string code, string message, object? obj = null)
     {
         Code = code;
         Message = message;
@@ -15,7 +15,11 @@ public abstract class Failure : IEquatable<Failure>
 
     protected object? Obj { get; }
 
-    public static implicit operator string(Failure failure) => failure.Code;
+    public static implicit operator string(Failure failure)
+    {
+        ArgumentNullException.ThrowIfNull(failure);
+        return failure.Code;
+    }
 
     public static bool operator ==(Failure? a, Failure? b)
     {
@@ -41,7 +45,7 @@ public abstract class Failure : IEquatable<Failure>
             return false;
         }
 
-        return Code == other.Code && Message == other.Message;
+        return GetType() == other.GetType() && Code == other.Code && Message == other.Message;
     }
 
     public override bool Equals(object? obj) => obj is Failure failure && Equals(failure);
